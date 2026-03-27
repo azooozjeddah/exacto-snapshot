@@ -28,7 +28,7 @@ const HeroSection = () => {
       </nav>
 
       {/* Hero Content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-[150px] md:pt-[180px]">
         <div className="animate-fade-up">
           <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-[0.25em] mb-8 leading-tight">
             <span className="text-white block">THE VIEW</span>
