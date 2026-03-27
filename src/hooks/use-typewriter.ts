@@ -2,8 +2,10 @@ import { useState, useEffect, useRef } from "react";
 
 interface TypewriterEntry {
   line1: string;
-  line2: string;
+  line2?: string;
 }
+
+type Phase = "typing1" | "typing2" | "holding" | "deleting2" | "deleting1";
 
 export function useTypewriter(entries: TypewriterEntry[], {
   typeSpeed = 100,
@@ -13,76 +15,76 @@ export function useTypewriter(entries: TypewriterEntry[], {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayLine1, setDisplayLine1] = useState("");
   const [displayLine2, setDisplayLine2] = useState("");
-  const [phase, setPhase] = useState<"typing1" | "typing2" | "holding" | "deleting2" | "deleting1">("typing1");
-  const charIndex = useRef(0);
+  const [phase, setPhase] = useState<Phase>("typing1");
+  const charRef = useRef(0);
 
   useEffect(() => {
     const entry = entries[currentIndex];
-    let timeout: ReturnType<typeof setTimeout>;
+    const hasLine2 = !!entry.line2;
 
-    switch (phase) {
-      case "typing1": {
-        if (charIndex.current <= entry.line1.length) {
-          setDisplayLine1(entry.line1.slice(0, charIndex.current));
-          charIndex.current++;
-          timeout = setTimeout(() => {}, typeSpeed);
-          timeout = setTimeout(() => setDisplayLine1(prev => {
-            const next = entry.line1.slice(0, prev.length + 1);
-            if (next.length >= entry.line1.length) {
-              charIndex.current = 0;
+    const timeout = setTimeout(() => {
+      switch (phase) {
+        case "typing1": {
+          const next = charRef.current + 1;
+          setDisplayLine1(entry.line1.slice(0, next));
+          charRef.current = next;
+          if (next >= entry.line1.length) {
+            charRef.current = 0;
+            if (hasLine2) {
               setPhase("typing2");
-            }
-            return next;
-          }), typeSpeed);
-        }
-        break;
-      }
-      case "typing2": {
-        if (charIndex.current <= entry.line2.length) {
-          timeout = setTimeout(() => {
-            setDisplayLine2(entry.line2.slice(0, charIndex.current + 1));
-            charIndex.current++;
-            if (charIndex.current >= entry.line2.length) {
+            } else {
               setPhase("holding");
             }
-          }, typeSpeed);
+          }
+          break;
         }
-        break;
-      }
-      case "holding": {
-        timeout = setTimeout(() => {
-          charIndex.current = entry.line2.length;
-          setPhase("deleting2");
-        }, holdTime);
-        break;
-      }
-      case "deleting2": {
-        timeout = setTimeout(() => {
-          charIndex.current--;
-          setDisplayLine2(entry.line2.slice(0, charIndex.current));
-          if (charIndex.current <= 0) {
-            charIndex.current = entry.line1.length;
+        case "typing2": {
+          const line2 = entry.line2!;
+          const next = charRef.current + 1;
+          setDisplayLine2(line2.slice(0, next));
+          charRef.current = next;
+          if (next >= line2.length) {
+            setPhase("holding");
+          }
+          break;
+        }
+        case "holding": {
+          if (hasLine2) {
+            charRef.current = entry.line2!.length;
+            setPhase("deleting2");
+          } else {
+            charRef.current = entry.line1.length;
             setPhase("deleting1");
           }
-        }, deleteSpeed);
-        break;
-      }
-      case "deleting1": {
-        timeout = setTimeout(() => {
-          charIndex.current--;
-          setDisplayLine1(entry.line1.slice(0, charIndex.current));
-          if (charIndex.current <= 0) {
+          break;
+        }
+        case "deleting2": {
+          charRef.current--;
+          setDisplayLine2(entry.line2!.slice(0, charRef.current));
+          if (charRef.current <= 0) {
+            charRef.current = entry.line1.length;
+            setPhase("deleting1");
+          }
+          break;
+        }
+        case "deleting1": {
+          charRef.current--;
+          setDisplayLine1(entry.line1.slice(0, charRef.current));
+          if (charRef.current <= 0) {
+            setDisplayLine2("");
             setCurrentIndex((currentIndex + 1) % entries.length);
-            charIndex.current = 0;
+            charRef.current = 0;
             setPhase("typing1");
           }
-        }, deleteSpeed);
-        break;
+          break;
+        }
       }
-    }
+    }, phase === "holding" ? holdTime : phase.startsWith("deleting") ? deleteSpeed : typeSpeed);
 
     return () => clearTimeout(timeout);
   }, [phase, currentIndex, displayLine1, displayLine2, entries, typeSpeed, deleteSpeed, holdTime]);
 
-  return { displayLine1, displayLine2, phase };
+  const hasLine2 = !!entries[currentIndex].line2;
+
+  return { displayLine1, displayLine2, phase, hasLine2 };
 }
