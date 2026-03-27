@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTypewriter } from "@/hooks/use-typewriter";
 import { Menu, X } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo-transparent.png";
@@ -13,6 +14,10 @@ const navLinks = [
 
 const HeroSection = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { displayLine1, displayLine2, phase } = useTypewriter([
+    { line1: "THE VIEW", line2: "AVENUE" },
+    { line1: "ذا فيو", line2: "أفينيو" },
+  ], { typeSpeed: 120, deleteSpeed: 70, holdTime: 3500 });
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -79,10 +84,20 @@ const HeroSection = () => {
 
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-[120px] md:pt-[180px]">
-        <div className="animate-fade-up">
-          <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-[0.25em] mb-8 leading-tight">
-            <span className="text-white block">THE VIEW</span>
-            <span className="text-primary block">AVENUE</span>
+        <div>
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-[0.15em] mb-8 leading-tight min-h-[4.5rem] md:min-h-[7rem] lg:min-h-[10rem]">
+            <span className="text-white block min-h-[1.2em]">
+              {displayLine1}
+              {(phase === "typing1" || phase === "deleting1") && (
+                <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
+              )}
+            </span>
+            <span className="text-primary block min-h-[1.2em]">
+              {displayLine2}
+              {(phase === "typing2" || phase === "deleting2") && (
+                <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
+              )}
+            </span>
           </h1>
           <p className="text-lg md:text-xl text-foreground/60 font-light tracking-[0.35em] uppercase mb-2">
             للفخامة تعلو
