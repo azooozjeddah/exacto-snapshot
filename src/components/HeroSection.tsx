@@ -16,7 +16,7 @@ const HeroSection = () => {
 
       {/* Navbar */}
       <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6" dir="rtl">
-        <img src={logo} alt="The View Avenue Logo" className="h-16 md:h-24 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-6" />
+        <img src={logo} alt="The View Avenue Logo" className="h-[60px] md:h-[80px] drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-6 mr-2 mt-1" />
         <div className="hidden md:flex items-center gap-8 text-sm font-body text-white">
           <a href="#features" className="hover:text-[#FFD700] transition-colors">مميزات المشروع</a>
           <a href="#partners" className="hover:text-[#FFD700] transition-colors">المحلات والمطاعم</a>
