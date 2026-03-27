@@ -7,10 +7,11 @@ const HeroSection = () => {
       <img
         src={heroBg}
         alt="The View Avenue"
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover blur-[2px]"
         width={1920}
         height={1080}
       />
+      <div className="absolute inset-0 bg-black/40" />
       <div className="hero-overlay absolute inset-0" />
 
       {/* Navbar */}
@@ -29,11 +30,11 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <div className="animate-fade-up">
-          <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-[0.15em] mb-4 leading-tight">
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-[0.25em] mb-8 leading-tight">
             <span className="text-white block">THE VIEW</span>
-            <span className="text-[#FFD700] block">AVENUE</span>
+            <span className="text-primary block">AVENUE</span>
           </h1>
-          <p className="text-xl md:text-2xl text-foreground/60 font-light tracking-[0.3em] uppercase mb-2">
+          <p className="text-lg md:text-xl text-foreground/60 font-light tracking-[0.35em] uppercase mb-2">
             للفخامة تعلو
           </p>
         </div>
