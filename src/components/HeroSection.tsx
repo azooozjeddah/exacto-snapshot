@@ -14,9 +14,9 @@ const navLinks = [
 
 const HeroSection = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { displayLine1, displayLine2, phase } = useTypewriter([
+  const { displayLine1, displayLine2, phase, hasLine2 } = useTypewriter([
     { line1: "THE VIEW", line2: "AVENUE" },
-    { line1: "ذا فيو", line2: "أفينيو" },
+    { line1: "ذا فيو أفينيو" },
   ], { typeSpeed: 120, deleteSpeed: 70, holdTime: 3500 });
 
   return (
