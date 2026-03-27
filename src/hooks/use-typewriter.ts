@@ -84,5 +84,5 @@ export function useTypewriter(entries: TypewriterEntry[], {
     return () => clearTimeout(timeout);
   }, [phase, currentIndex, displayLine1, displayLine2, entries, typeSpeed, deleteSpeed, holdTime]);
 
-  return { displayLine1, displayLine2, isTyping: phase === "typing1" || phase === "typing2" };
+  return { displayLine1, displayLine2, phase };
 }
