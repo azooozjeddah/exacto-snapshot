@@ -102,7 +102,7 @@ const HeroSection = () => {
                 </span>
               </>
             ) : (
-              <span className="block text-2xl md:text-4xl lg:text-6xl tracking-[0.08em] min-h-[2.4em] flex items-center justify-center">
+              <span className="block text-4xl md:text-6xl lg:text-8xl tracking-[0.08em] min-h-[2.4em] flex items-center justify-center">
                 <span className="hero-text-white" style={{ color: '#FFFFFF' }}>{displayLine1.slice(0, Math.min(colorSplitAt ?? displayLine1.length, displayLine1.length))}</span>
                 <span className="hero-text-gold" style={{ color: '#D4AF37' }}>{displayLine1.slice(colorSplitAt ?? displayLine1.length)}</span>
                 {(phase === "typing1" || phase === "deleting1") && (
