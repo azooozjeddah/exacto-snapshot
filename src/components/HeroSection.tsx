@@ -7,11 +7,11 @@ const HeroSection = () => {
       <img
         src={heroBg}
         alt="The View Avenue"
-        className="absolute inset-0 w-full h-full object-cover blur-[1.5px]"
+        className="absolute inset-0 w-full h-full object-cover blur-[0.5px]"
         width={1920}
         height={1080}
       />
-      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-black/20" />
       <div className="hero-overlay absolute inset-0" />
 
       {/* Navbar */}
@@ -22,7 +22,7 @@ const HeroSection = () => {
           <a href="#gallery" className="hover:text-[#FFD700] transition-colors">معرض الصور</a>
           <a href="#experience" className="hover:text-[#FFD700] transition-colors">التجربة</a>
           <a href="#location" className="hover:text-[#FFD700] transition-colors">الموقع</a>
-          <a href="#partners" className="hover:text-[#FFD700] transition-colors">شركاء الجودة</a>
+          <a href="#partners" className="hover:text-[#FFD700] transition-colors">المحلات والمطاعم</a>
           <a href="#contact" className="text-[#FFD700] hover:text-white transition-colors bg-primary/10 border border-[#FFD700] px-5 py-2 rounded-sm">تواصل معنا</a>
         </div>
       </nav>
