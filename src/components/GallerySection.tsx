@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
-import g1 from "@/assets/gallery-1.webp";
-import g2 from "@/assets/gallery-2.webp";
-import g3 from "@/assets/gallery-3.webp";
-import g4 from "@/assets/gallery-4.webp";
-import g5 from "@/assets/gallery-5.webp";
-import g6 from "@/assets/gallery-6.webp";
-import g7 from "@/assets/gallery-7.webp";
-import g8 from "@/assets/gallery-8.webp";
-import g9 from "@/assets/gallery-9.webp";
-import g10 from "@/assets/gallery-10.webp";
-import g11 from "@/assets/gallery-11.webp";
-import g12 from "@/assets/gallery-12.webp";
-import g13 from "@/assets/gallery-13.webp";
+import g1 from "@/assets/gallery-new-1.jpg";
+import g2 from "@/assets/gallery-new-2.jpg";
+import g3 from "@/assets/gallery-new-3.jpg";
+import g4 from "@/assets/gallery-new-4.jpg";
+import g5 from "@/assets/gallery-new-5.jpg";
+import g6 from "@/assets/gallery-new-6.jpg";
+import g7 from "@/assets/gallery-new-7.jpg";
+import g8 from "@/assets/gallery-new-8.jpg";
+import g9 from "@/assets/gallery-new-9.jpg";
+import g10 from "@/assets/gallery-new-10.jpg";
+import g11 from "@/assets/gallery-new-11.jpg";
+import g12 from "@/assets/gallery-new-13.jpg";
 
-const images = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13];
+const images = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12];
 
 const GallerySection = () => {
   const [lightbox, setLightbox] = useState<number | null>(null);
