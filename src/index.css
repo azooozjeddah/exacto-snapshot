@@ -71,7 +71,7 @@
 
 @layer components {
   .text-gold-gradient {
-    background: linear-gradient(135deg, hsl(var(--gold-light)), hsl(var(--gold)), hsl(var(--gold-dark)));
+    background: linear-gradient(135deg, #FFE88D, #FFD700, #DAA520);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
