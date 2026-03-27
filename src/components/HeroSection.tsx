@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTypewriter } from "@/hooks/use-typewriter";
 import { Menu, X } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo-transparent.png";
