@@ -1,5 +1,5 @@
 import heroBg from "@/assets/hero-bg.jpg";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-transparent.png";
 
 const HeroSection = () => {
   return (
@@ -15,9 +15,10 @@ const HeroSection = () => {
 
       {/* Navbar */}
       <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6" dir="rtl">
-        <img src={logo} alt="The View Avenue Logo" className="h-14 md:h-20 brightness-150 sepia saturate-200 hue-rotate-[15deg]" />
+        <img src={logo} alt="The View Avenue Logo" className="h-16 md:h-24 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
         <div className="hidden md:flex items-center gap-8 text-sm font-body text-foreground/80">
           <a href="#features" className="hover:text-primary transition-colors">مميزات المشروع</a>
+          <a href="#gallery" className="hover:text-primary transition-colors">معرض الصور</a>
           <a href="#experience" className="hover:text-primary transition-colors">التجربة</a>
           <a href="#location" className="hover:text-primary transition-colors">الموقع</a>
           <a href="#partners" className="hover:text-primary transition-colors">شركاء الجودة</a>
@@ -28,14 +29,15 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <div className="animate-fade-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-wide mb-6">
-            <span className="text-gold-gradient">ذا فيو أفينيو</span>
-            <span className="text-foreground"> - </span>
-            <span className="text-foreground">للفخامة تعلو</span>
+          <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-[0.15em] mb-4">
+            <span className="text-gold-gradient">THE VIEW AVENUE</span>
           </h1>
+          <p className="text-xl md:text-2xl text-foreground/60 font-light tracking-[0.3em] uppercase mb-2">
+            للفخامة تعلو
+          </p>
         </div>
         <div className="animate-fade-up animation-delay-600">
-          <div className="section-divider w-32 mx-auto mb-10" />
+          <div className="section-divider w-32 mx-auto mb-10 mt-6" />
           <p className="text-foreground/70 max-w-2xl mx-auto leading-relaxed text-base md:text-lg">
             وجهة تجارية فاخرة تتطلع إليها الأنظار في قلب مدينة جدة، تجمع بين التصميم العصري والفخامة الاستثنائية لتقدم تجربة تسوق وعمل وترفيه لا مثيل لها
           </p>
