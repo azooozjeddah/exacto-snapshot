@@ -1,21 +1,27 @@
 import HeroSection from "@/components/HeroSection";
+import StatsSection from "@/components/StatsSection";
 import FeaturesSection from "@/components/FeaturesSection";
+import FacilitiesSection from "@/components/FacilitiesSection";
 import GallerySection from "@/components/GallerySection";
 import ExperienceSection from "@/components/ExperienceSection";
 import LocationSection from "@/components/LocationSection";
 import PartnersSection from "@/components/PartnersSection";
 import DeveloperSection from "@/components/DeveloperSection";
+import ContactFormSection from "@/components/ContactFormSection";
 import FooterSection from "@/components/FooterSection";
 
 const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       <HeroSection />
+      <StatsSection />
       <FeaturesSection />
+      <FacilitiesSection />
       <PartnersSection />
       <GallerySection />
       <ExperienceSection />
       <LocationSection />
+      <ContactFormSection />
       <DeveloperSection />
       <FooterSection />
 
