@@ -33,6 +33,7 @@ const HeroSection = () => {
             <span className="text-foreground"> - </span>
             <span className="text-foreground">للفخامة تعلو</span>
           </h1>
+        </div>
         <div className="animate-fade-up animation-delay-600">
           <div className="section-divider w-32 mx-auto mb-10" />
           <p className="text-foreground/70 max-w-2xl mx-auto leading-relaxed text-base md:text-lg">
