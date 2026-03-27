@@ -31,14 +31,18 @@ const HeroSection = () => {
         <img src={logo} alt="The View Avenue Logo" className="h-[45px] md:h-20 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-4 md:ml-6" />
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-body text-[#D4AF37]">
+        <div className="hidden md:flex flex-1 items-center justify-center gap-10 lg:gap-14 text-lg font-semibold font-body text-[#D4AF37] mx-8">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="hover:text-[#FFD700] transition-colors">
+            <a
+              key={link.href}
+              href={link.href}
+              className="relative hover:text-[#FFD700] transition-colors duration-300 after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#D4AF37] after:transition-all after:duration-300 hover:after:w-full hover:drop-shadow-[0_0_6px_rgba(212,175,55,0.5)]"
+            >
               {link.label}
             </a>
           ))}
-          <a href="#contact" className="text-[#FFD700] hover:text-white transition-colors bg-primary/10 border border-[#FFD700] px-5 py-2 rounded-sm">تواصل معنا</a>
         </div>
+        <a href="#contact" className="hidden md:block text-[#FFD700] text-lg font-semibold hover:text-white transition-colors bg-primary/10 border border-[#FFD700] px-6 py-2.5 rounded-sm whitespace-nowrap">تواصل معنا</a>
 
         {/* Mobile hamburger */}
         <button
