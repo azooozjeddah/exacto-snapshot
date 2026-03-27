@@ -14,15 +14,15 @@ const HeroSection = () => {
       <div className="hero-overlay absolute inset-0" />
 
       {/* Navbar */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6" dir="rtl">
+      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 bg-gradient-to-b from-black/70 via-black/40 to-transparent" dir="rtl">
         <img src={logo} alt="The View Avenue Logo" className="h-16 md:h-24 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
-        <div className="hidden md:flex items-center gap-8 text-sm font-body text-foreground/80">
-          <a href="#features" className="hover:text-primary transition-colors">مميزات المشروع</a>
-          <a href="#gallery" className="hover:text-primary transition-colors">معرض الصور</a>
-          <a href="#experience" className="hover:text-primary transition-colors">التجربة</a>
-          <a href="#location" className="hover:text-primary transition-colors">الموقع</a>
-          <a href="#partners" className="hover:text-primary transition-colors">شركاء الجودة</a>
-          <a href="#contact" className="hover:text-primary transition-colors bg-primary/10 border border-gold px-5 py-2 rounded-sm">تواصل معنا</a>
+        <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-foreground">
+          <a href="#features" className="hover:text-primary transition-colors duration-300">مميزات المشروع</a>
+          <a href="#gallery" className="hover:text-primary transition-colors duration-300">معرض الصور</a>
+          <a href="#experience" className="hover:text-primary transition-colors duration-300">التجربة</a>
+          <a href="#location" className="hover:text-primary transition-colors duration-300">الموقع</a>
+          <a href="#partners" className="hover:text-primary transition-colors duration-300">شركاء الجودة</a>
+          <a href="#contact" className="text-primary font-bold hover:text-foreground transition-colors duration-300 bg-primary/10 border border-gold px-5 py-2 rounded-sm">تواصل معنا</a>
         </div>
       </nav>
 
