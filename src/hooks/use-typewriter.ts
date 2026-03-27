@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 interface TypewriterEntry {
   line1: string;
   line2?: string;
+  colorSplitAt?: number;
 }
 
 type Phase = "typing1" | "typing2" | "holding" | "deleting2" | "deleting1";
