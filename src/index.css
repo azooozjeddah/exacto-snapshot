@@ -148,3 +148,11 @@
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
+
+.hero-text-white {
+  color: #FFFFFF !important;
+}
+
+.hero-text-gold {
+  color: #D4AF37 !important;
+}

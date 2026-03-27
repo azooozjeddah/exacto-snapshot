@@ -88,13 +88,13 @@ const HeroSection = () => {
           <h1 className="font-display font-bold mb-8 leading-tight min-h-[4.5rem] md:min-h-[7rem] lg:min-h-[10rem]">
             {hasLine2 ? (
               <>
-                <span className="text-white block text-3xl md:text-5xl lg:text-7xl tracking-[0.15em] min-h-[1.2em]">
+                <span className="hero-text-white block text-3xl md:text-5xl lg:text-7xl tracking-[0.15em] min-h-[1.2em]" style={{ color: '#FFFFFF' }}>
                   {displayLine1}
                   {(phase === "typing1" || phase === "deleting1") && (
                     <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
                   )}
                 </span>
-                <span className="text-primary block text-3xl md:text-5xl lg:text-7xl tracking-[0.15em] min-h-[1.2em]">
+                <span className="hero-text-gold block text-3xl md:text-5xl lg:text-7xl tracking-[0.15em] min-h-[1.2em]" style={{ color: '#D4AF37' }}>
                   {displayLine2}
                   {(phase === "typing2" || phase === "deleting2") && (
                     <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
@@ -103,8 +103,8 @@ const HeroSection = () => {
               </>
             ) : (
               <span className="block text-2xl md:text-4xl lg:text-6xl tracking-[0.08em] min-h-[2.4em] flex items-center justify-center">
-                <span className="text-white">{displayLine1.slice(0, Math.min(colorSplitAt ?? displayLine1.length, displayLine1.length))}</span>
-                <span className="text-[#D4AF37]">{displayLine1.slice(colorSplitAt ?? displayLine1.length)}</span>
+                <span className="hero-text-white" style={{ color: '#FFFFFF' }}>{displayLine1.slice(0, Math.min(colorSplitAt ?? displayLine1.length, displayLine1.length))}</span>
+                <span className="hero-text-gold" style={{ color: '#D4AF37' }}>{displayLine1.slice(colorSplitAt ?? displayLine1.length)}</span>
                 {(phase === "typing1" || phase === "deleting1") && (
                   <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] mr-1 animate-pulse align-baseline" />
                 )}
