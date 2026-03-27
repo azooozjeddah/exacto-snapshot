@@ -1,4 +1,4 @@
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo-transparent.png";
 
 const FooterSection = () => {
   return (
@@ -6,9 +6,9 @@ const FooterSection = () => {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div>
-            <img src={logo} alt="The View Avenue" className="h-14 rounded mb-4" />
+            <img src={logo} alt="The View Avenue" className="h-16 mb-4 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]" />
             <p className="text-muted-foreground leading-relaxed text-sm">
-              ذا فيو أفينيو — للفخامة تعلو
+              THE VIEW AVENUE — للفخامة تعلو
               <br />
               وجهة تجارية فاخرة في قلب جدة
             </p>
@@ -18,6 +18,7 @@ const FooterSection = () => {
             <h4 className="text-foreground font-bold mb-4">روابط سريعة</h4>
             <ul className="space-y-3 text-muted-foreground text-sm">
               <li><a href="#features" className="hover:text-primary transition-colors">مميزات المشروع</a></li>
+              <li><a href="#gallery" className="hover:text-primary transition-colors">معرض الصور</a></li>
               <li><a href="#experience" className="hover:text-primary transition-colors">التجربة</a></li>
               <li><a href="#location" className="hover:text-primary transition-colors">الموقع</a></li>
               <li><a href="#partners" className="hover:text-primary transition-colors">شركاء الجودة</a></li>
