@@ -7,11 +7,11 @@ const HeroSection = () => {
       <img
         src={heroBg}
         alt="The View Avenue"
-        className="absolute inset-0 w-full h-full object-cover blur-[2px]"
+        className="absolute inset-0 w-full h-full object-cover blur-[1.5px]"
         width={1920}
         height={1080}
       />
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/30" />
       <div className="hero-overlay absolute inset-0" />
 
       {/* Navbar */}
