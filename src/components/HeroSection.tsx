@@ -14,7 +14,7 @@ const HeroSection = () => {
       <div className="hero-overlay absolute inset-0" />
 
       {/* Navbar */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 bg-black/60" dir="rtl">
+      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 bg-black/25 backdrop-blur-md" dir="rtl">
         <img src={logo} alt="The View Avenue Logo" className="h-16 md:h-24 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
         <div className="hidden md:flex items-center gap-8 text-sm font-body text-white">
           <a href="#features" className="hover:text-[#FFD700] transition-colors">مميزات المشروع</a>
