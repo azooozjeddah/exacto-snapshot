@@ -14,9 +14,9 @@ const navLinks = [
 
 const HeroSection = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { displayLine1, displayLine2, phase } = useTypewriter([
+  const { displayLine1, displayLine2, phase, hasLine2 } = useTypewriter([
     { line1: "THE VIEW", line2: "AVENUE" },
-    { line1: "ذا فيو", line2: "أفينيو" },
+    { line1: "ذا فيو أفينيو" },
   ], { typeSpeed: 120, deleteSpeed: 70, holdTime: 3500 });
 
   return (
@@ -85,19 +85,30 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-[120px] md:pt-[180px]">
         <div>
-          <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-[0.15em] mb-8 leading-tight min-h-[4.5rem] md:min-h-[7rem] lg:min-h-[10rem]">
-            <span className="text-white block min-h-[1.2em]">
-              {displayLine1}
-              {(phase === "typing1" || phase === "deleting1") && (
-                <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
-              )}
-            </span>
-            <span className="text-primary block min-h-[1.2em]">
-              {displayLine2}
-              {(phase === "typing2" || phase === "deleting2") && (
-                <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
-              )}
-            </span>
+          <h1 className="font-display font-bold mb-8 leading-tight min-h-[4.5rem] md:min-h-[7rem] lg:min-h-[10rem]">
+            {hasLine2 ? (
+              <>
+                <span className="text-white block text-3xl md:text-5xl lg:text-7xl tracking-[0.15em] min-h-[1.2em]">
+                  {displayLine1}
+                  {(phase === "typing1" || phase === "deleting1") && (
+                    <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
+                  )}
+                </span>
+                <span className="text-primary block text-3xl md:text-5xl lg:text-7xl tracking-[0.15em] min-h-[1.2em]">
+                  {displayLine2}
+                  {(phase === "typing2" || phase === "deleting2") && (
+                    <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] ml-1 animate-pulse align-baseline" />
+                  )}
+                </span>
+              </>
+            ) : (
+              <span className="text-[#D4AF37] block text-2xl md:text-4xl lg:text-6xl tracking-[0.08em] min-h-[2.4em] flex items-center justify-center">
+                {displayLine1}
+                {(phase === "typing1" || phase === "deleting1") && (
+                  <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] mr-1 animate-pulse align-baseline" />
+                )}
+              </span>
+            )}
           </h1>
           <p className="text-lg md:text-xl text-foreground/60 font-light tracking-[0.35em] uppercase mb-2">
             للفخامة تعلو
