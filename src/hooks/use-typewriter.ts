@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 interface TypewriterEntry {
   line1: string;
   line2?: string;
+  colorSplitAt?: number;
 }
 
 type Phase = "typing1" | "typing2" | "holding" | "deleting2" | "deleting1";
@@ -85,6 +86,7 @@ export function useTypewriter(entries: TypewriterEntry[], {
   }, [phase, currentIndex, displayLine1, displayLine2, entries, typeSpeed, deleteSpeed, holdTime]);
 
   const hasLine2 = !!entries[currentIndex].line2;
+  const colorSplitAt = entries[currentIndex].colorSplitAt;
 
-  return { displayLine1, displayLine2, phase, hasLine2 };
+  return { displayLine1, displayLine2, phase, hasLine2, colorSplitAt };
 }
