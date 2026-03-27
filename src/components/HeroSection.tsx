@@ -14,8 +14,8 @@ const HeroSection = () => {
       <div className="hero-overlay absolute inset-0" />
 
       {/* Navbar */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6">
-        <img src={logo} alt="The View Avenue Logo" className="h-12 md:h-16 rounded" />
+      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6" dir="rtl">
+        <img src={logo} alt="The View Avenue Logo" className="h-14 md:h-20 brightness-150 sepia saturate-200 hue-rotate-[15deg]" />
         <div className="hidden md:flex items-center gap-8 text-sm font-body text-foreground/80">
           <a href="#features" className="hover:text-primary transition-colors">مميزات المشروع</a>
           <a href="#experience" className="hover:text-primary transition-colors">التجربة</a>
