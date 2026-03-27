@@ -28,21 +28,11 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <div className="animate-fade-up">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-wide mb-4" dir="ltr">
-            <span className="text-gold-gradient">THE VIEW</span>
-            <br />
-            <span className="text-foreground">AVENUE</span>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-wide mb-6">
+            <span className="text-gold-gradient">ذا فيو أفينيو</span>
+            <span className="text-foreground"> - </span>
+            <span className="text-foreground">للفخامة تعلو</span>
           </h1>
-        </div>
-        <div className="animate-fade-up animation-delay-200">
-          <p className="text-2xl md:text-3xl font-body text-primary mb-2">
-            ذا فيو أفينيو
-          </p>
-        </div>
-        <div className="animate-fade-up animation-delay-400">
-          <p className="text-lg md:text-xl text-muted-foreground font-light mb-10">
-            للفخامة تعلو
-          </p>
         </div>
         <div className="animate-fade-up animation-delay-600">
           <div className="section-divider w-32 mx-auto mb-10" />
