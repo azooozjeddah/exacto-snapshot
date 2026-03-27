@@ -19,11 +19,12 @@ const HeroSection = () => {
         </nav>
       </div>
 
-      {/* Hero background - clean version */}
+      {/* Hero background */}
       <img
         src={heroBg}
         alt="The View Avenue"
-        className="absolute inset-0 w-full h-full object-cover brightness-[0.5]"
+        className="absolute inset-0 w-full h-full object-cover brightness-[0.3]"
+        style={{ objectPosition: "center 60%" }}
         width={1920}
         height={1080}
       />
