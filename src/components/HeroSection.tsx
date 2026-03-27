@@ -15,8 +15,8 @@ const HeroSection = () => {
       <div className="hero-overlay absolute inset-0" />
 
       {/* Navbar */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 bg-black/65 backdrop-blur-[8px]" dir="rtl">
-        <img src={logo} alt="The View Avenue Logo" className="h-16 md:h-24 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-6" />
+      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-4 bg-black/65 backdrop-blur-[8px]" dir="rtl">
+        <img src={logo} alt="The View Avenue Logo" className="h-14 md:h-20 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-6" />
         <div className="hidden md:flex items-center gap-8 text-sm font-body text-[#D4AF37]">
           <a href="#features" className="hover:text-[#FFD700] transition-colors">مميزات المشروع</a>
           <a href="#partners" className="hover:text-[#FFD700] transition-colors">المحلات والمطاعم</a>
@@ -28,7 +28,7 @@ const HeroSection = () => {
       </nav>
 
       {/* Hero Content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-[150px] md:pt-[180px]">
         <div className="animate-fade-up">
           <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-[0.25em] mb-8 leading-tight">
             <span className="text-white block">THE VIEW</span>
