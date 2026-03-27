@@ -29,8 +29,9 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <div className="animate-fade-up">
-          <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-[0.15em] mb-4">
-            <span className="text-gold-gradient">THE VIEW AVENUE</span>
+          <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-[0.15em] mb-4 leading-tight">
+            <span className="text-white block">THE VIEW</span>
+            <span className="text-[#FFD700] block">AVENUE</span>
           </h1>
           <p className="text-xl md:text-2xl text-foreground/60 font-light tracking-[0.3em] uppercase mb-2">
             للفخامة تعلو
