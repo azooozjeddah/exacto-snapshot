@@ -86,6 +86,7 @@ export function useTypewriter(entries: TypewriterEntry[], {
   }, [phase, currentIndex, displayLine1, displayLine2, entries, typeSpeed, deleteSpeed, holdTime]);
 
   const hasLine2 = !!entries[currentIndex].line2;
+  const colorSplitAt = entries[currentIndex].colorSplitAt;
 
-  return { displayLine1, displayLine2, phase, hasLine2 };
+  return { displayLine1, displayLine2, phase, hasLine2, colorSplitAt };
 }
