@@ -1,5 +1,5 @@
 import heroBg from "@/assets/hero-bg.jpg";
-import logo from "@/assets/logo-transparent.png";
+import logo from "@/assets/logo-gold.png";
 
 const HeroSection = () => {
   return (
@@ -23,7 +23,7 @@ const HeroSection = () => {
           <a href="#gallery" className="hover:text-[#FFD700] transition-colors">معرض الصور</a>
           <a href="#experience" className="hover:text-[#FFD700] transition-colors">التجربة</a>
           <a href="#location" className="hover:text-[#FFD700] transition-colors">الموقع</a>
-          <a href="#contact" className="text-[#FFD700] hover:text-white transition-colors bg-primary/10 border border-[#FFD700] px-5 py-2 rounded-sm">تواصل معنا</a>
+          <a href="https://wa.me/966555610198" target="_blank" rel="noopener noreferrer" className="text-[#FFD700] hover:text-white transition-colors bg-primary/10 border border-[#FFD700] px-5 py-2 rounded-sm">تواصل معنا</a>
         </div>
       </nav>
 
