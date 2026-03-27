@@ -103,22 +103,8 @@ const HeroSection = () => {
               </>
             ) : (
               <span className="block text-2xl md:text-4xl lg:text-6xl tracking-[0.08em] min-h-[2.4em] flex items-center justify-center">
-                {(() => {
-                  const entry = [
-                    { line1: "THE VIEW", line2: "AVENUE" },
-                    { line1: "ذا فيو أفينيو", colorSplitAt: 6 },
-                  ];
-                  const currentEntry = entry[displayLine2 === "" && !hasLine2 ? 1 : 0];
-                  const splitAt = currentEntry.colorSplitAt ?? displayLine1.length;
-                  const whitePart = displayLine1.slice(0, Math.min(splitAt, displayLine1.length));
-                  const goldPart = displayLine1.slice(splitAt);
-                  return (
-                    <>
-                      <span className="text-white">{whitePart}</span>
-                      <span className="text-[#D4AF37]">{goldPart}</span>
-                    </>
-                  );
-                })()}
+                <span className="text-white">{displayLine1.slice(0, Math.min(colorSplitAt ?? displayLine1.length, displayLine1.length))}</span>
+                <span className="text-[#D4AF37]">{displayLine1.slice(colorSplitAt ?? displayLine1.length)}</span>
                 {(phase === "typing1" || phase === "deleting1") && (
                   <span className="inline-block w-[3px] h-[0.8em] bg-[#D4AF37] mr-1 animate-pulse align-baseline" />
                 )}
