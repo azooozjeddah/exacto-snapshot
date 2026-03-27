@@ -1,8 +1,10 @@
-const partners = [
-  { name: "SWORD", color: "hsl(var(--gold))" },
-  { name: "EXA", color: "hsl(var(--gold))" },
-  { name: "الرابحي", color: "hsl(var(--gold))" },
-  { name: "MAISON VILLA", color: "hsl(var(--gold))" },
+import { UtensilsCrossed, Coffee, Briefcase, Baby } from "lucide-react";
+
+const categories = [
+  { name: "المطاعم", icon: UtensilsCrossed },
+  { name: "المقاهي", icon: Coffee },
+  { name: "المكاتب الإدارية", icon: Briefcase },
+  { name: "منطقة ألعاب الأطفال", icon: Baby },
 ];
 
 const PartnersSection = () => {
@@ -11,22 +13,23 @@ const PartnersSection = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-gold-gradient mb-4">
-            شركاء الجودة
+            المحلات والمطاعم
           </h2>
           <div className="section-divider w-24 mx-auto mb-6" />
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            نفخر بشراكتنا مع أفضل الشركات لتقديم أعلى معايير الجودة
+            اكتشف مجموعة مختارة من أرقى العلامات التجارية والمطاعم والمقاهي في ذا فيو أفينيو.
           </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {partners.map((partner, index) => (
+          {categories.map((cat, index) => (
             <div
               key={index}
-              className="group flex items-center justify-center p-8 rounded-lg bg-card border border-border hover:border-gold transition-all duration-500 h-32"
+              className="group flex flex-col items-center justify-center gap-4 p-8 rounded-lg bg-card border border-border hover:border-primary transition-all duration-500 h-40"
             >
-              <span className="text-xl md:text-2xl font-bold text-muted-foreground group-hover:text-primary transition-colors">
-                {partner.name}
+              <cat.icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform" />
+              <span className="text-lg md:text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors text-center">
+                {cat.name}
               </span>
             </div>
           ))}
