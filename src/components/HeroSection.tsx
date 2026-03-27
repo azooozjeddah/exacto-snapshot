@@ -1,7 +1,19 @@
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo-transparent.png";
 
+const navLinks = [
+  { href: "#features", label: "مميزات المشروع" },
+  { href: "#partners", label: "المحلات والمطاعم" },
+  { href: "#gallery", label: "معرض الصور" },
+  { href: "#experience", label: "التجربة" },
+  { href: "#location", label: "الموقع" },
+];
+
 const HeroSection = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <img
@@ -14,21 +26,55 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-black/20" />
       <div className="hero-overlay absolute inset-0" />
 
-      {/* Navbar */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-4 bg-black/65 backdrop-blur-[8px]" dir="rtl">
-        <img src={logo} alt="The View Avenue Logo" className="h-14 md:h-20 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-6" />
+      {/* Navbar - sticky */}
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-3 md:py-4 bg-black/65 backdrop-blur-[8px]" dir="rtl">
+        <img src={logo} alt="The View Avenue Logo" className="h-[45px] md:h-20 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-4 md:ml-6" />
+
+        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-body text-[#D4AF37]">
-          <a href="#features" className="hover:text-[#FFD700] transition-colors">مميزات المشروع</a>
-          <a href="#partners" className="hover:text-[#FFD700] transition-colors">المحلات والمطاعم</a>
-          <a href="#gallery" className="hover:text-[#FFD700] transition-colors">معرض الصور</a>
-          <a href="#experience" className="hover:text-[#FFD700] transition-colors">التجربة</a>
-          <a href="#location" className="hover:text-[#FFD700] transition-colors">الموقع</a>
+          {navLinks.map((link) => (
+            <a key={link.href} href={link.href} className="hover:text-[#FFD700] transition-colors">
+              {link.label}
+            </a>
+          ))}
           <a href="#contact" className="text-[#FFD700] hover:text-white transition-colors bg-primary/10 border border-[#FFD700] px-5 py-2 rounded-sm">تواصل معنا</a>
         </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden text-[#D4AF37] p-2"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </nav>
 
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center gap-8" dir="rtl">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-[#D4AF37] text-2xl font-body hover:text-[#FFD700] transition-colors tracking-wider"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            className="text-[#FFD700] text-xl border border-[#FFD700] px-8 py-3 rounded-sm hover:bg-[#D4AF37]/10 transition-colors mt-4"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            تواصل معنا
+          </a>
+        </div>
+      )}
+
       {/* Hero Content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-[150px] md:pt-[180px]">
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-[120px] md:pt-[180px]">
         <div className="animate-fade-up">
           <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-[0.25em] mb-8 leading-tight">
             <span className="text-white block">THE VIEW</span>
