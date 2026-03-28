@@ -12,6 +12,7 @@ import AdminSettings from "./pages/admin/AdminSettings.tsx";
 import AdminPhotos from "./pages/admin/AdminPhotos.tsx";
 import AdminTenants from "./pages/admin/AdminTenants.tsx";
 import AdminFeatures from "./pages/admin/AdminFeatures.tsx";
+import AdminSeo from "./pages/admin/AdminSeo.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
 
 const queryClient = new QueryClient();
