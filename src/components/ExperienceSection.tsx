@@ -26,17 +26,24 @@ const ExperienceSection = () => {
   const [experiences, setExperiences] = useState(defaultExperiences);
 
   useEffect(() => {
-    const fetchExp = () => {
-      supabase.from('gallery_photos').select('*').like('category', 'experience_%').eq('is_active', true).order('sort_order')
-        .then(({ data }) => {
-          if (data && data.length > 0) {
-            setExperiences(data.map((p, i) => ({
-              image: p.url,
-              title: p.alt_text_ar || defaultExperiences[i]?.title || `تجربة ${i + 1}`,
-              description: p.alt_text_en || defaultExperiences[i]?.description || '',
-            })));
-          } else setExperiences(defaultExperiences);
-        });
+    const fetchExp = async () => {
+      const { data, error } = await supabase
+        .from('gallery_photos')
+        .select('*')
+        .or('category.eq.experience,category.like.experience_%')
+        .eq('is_active', true)
+        .order('sort_order');
+
+      console.log('[experience] fetched photos', data, error);
+      if (data && data.length > 0) {
+        setExperiences(data.map((p, i) => ({
+          image: p.url,
+          title: p.alt_text_ar || defaultExperiences[i]?.title || `تجربة ${i + 1}`,
+          description: p.alt_text_en || defaultExperiences[i]?.description || '',
+        })));
+      } else {
+        setExperiences(defaultExperiences);
+      }
     };
     fetchExp();
 

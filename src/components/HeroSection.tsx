@@ -20,10 +20,20 @@ const HeroSection = () => {
   const { get } = useSiteSettings();
 
   useEffect(() => {
-    const fetchHero = () => {
-      supabase.from('gallery_photos').select('url').eq('category', 'hero_main').eq('is_active', true).limit(1)
-        .then(({ data }) => { if (data?.[0]?.url) setHeroBg(data[0].url); else setHeroBg(heroBgFallback); });
+    const fetchHero = async () => {
+      const { data, error } = await supabase
+        .from('gallery_photos')
+        .select('url, category')
+        .in('category', ['hero', 'hero_main'])
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .limit(1);
+
+      console.log('[hero] fetched photos', data, error);
+      if (data?.[0]?.url) setHeroBg(data[0].url);
+      else setHeroBg(heroBgFallback);
     };
+
     fetchHero();
 
     const channel = supabase.channel('hero-realtime')
