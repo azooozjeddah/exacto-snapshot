@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useTypewriter } from "@/hooks/use-typewriter";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { supabase } from "@/integrations/supabase/client";
 import { Menu, X } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBgFallback from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo-transparent.png";
 
 const navLinks = [
@@ -15,7 +16,13 @@ const navLinks = [
 
 const HeroSection = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [heroBg, setHeroBg] = useState(heroBgFallback);
   const { get } = useSiteSettings();
+
+  useEffect(() => {
+    supabase.from('gallery_photos').select('url').eq('category', 'hero_main').eq('is_active', true).limit(1).single()
+      .then(({ data }) => { if (data?.url) setHeroBg(data.url); });
+  }, []);
 
   const subtitleAr = get('hero_subtitle', 'ar') || 'وجهة تجارية فاخرة تتطلع إليها الأنظار في قلب مدينة جدة، تجمع بين التصميم العصري والفخامة الاستثنائية لتقدم تجربة تسوق وعمل وترفيه لا مثيل لها';
 

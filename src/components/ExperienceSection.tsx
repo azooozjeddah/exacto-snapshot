@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import diningImg from "@/assets/dining.jpg";
 import workspaceImg from "@/assets/workspace.jpg";
 import relaxationImg from "@/assets/relaxation.jpg";
 
-const experiences = [
+const defaultExperiences = [
   {
     image: diningImg,
     title: "تجربة مميزة لتذوق الطعام",
@@ -21,6 +23,21 @@ const experiences = [
 ];
 
 const ExperienceSection = () => {
+  const [experiences, setExperiences] = useState(defaultExperiences);
+
+  useEffect(() => {
+    supabase.from('gallery_photos').select('*').like('category', 'experience_%').eq('is_active', true).order('sort_order')
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setExperiences(data.map((p, i) => ({
+            image: p.url,
+            title: p.alt_text_ar || defaultExperiences[i]?.title || `تجربة ${i + 1}`,
+            description: p.alt_text_en || defaultExperiences[i]?.description || '',
+          })));
+        }
+      });
+  }, []);
+
   return (
     <section id="experience" className="py-24 px-4">
       <div className="max-w-6xl mx-auto">
