@@ -42,6 +42,7 @@ const App = () => (
             <Route path="tenants" element={<AdminTenants />} />
             <Route path="features" element={<AdminFeatures />} />
             <Route path="seo" element={<AdminSeo />} />
+            <Route path="users" element={<AdminUsers />} />
             <Route path="profile" element={<AdminProfile />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
