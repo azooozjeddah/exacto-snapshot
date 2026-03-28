@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 
-export type AppRole = 'admin' | 'photo_manager' | 'tenant_manager' | 'features_manager' | 'settings_manager';
-
 export type AppRole = 'admin' | 'photo_manager' | 'tenant_manager' | 'features_manager' | 'settings_manager' | 'accountant' | 'data_entry';
 
 const rolePageMap: Record<AppRole, string[]> = {
