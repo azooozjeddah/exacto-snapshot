@@ -21,18 +21,31 @@ const FeaturesSection = () => {
   const [features, setFeatures] = useState(defaultFeatures);
   const [fromDb, setFromDb] = useState(false);
 
+  const mapData = (data: any[]) => {
+    setFeatures(data.map((f) => ({
+      icon: Building2,
+      iconName: f.icon || 'Building2',
+      title: f.title_ar,
+      description: f.description_ar || '',
+    })) as any);
+    setFromDb(true);
+  };
+
   useEffect(() => {
     supabase.from('project_features').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
-      if (data && data.length > 0) {
-        setFeatures(data.map((f) => ({
-          icon: Building2, // placeholder, we use DynIcon for DB items
-          iconName: f.icon || 'Building2',
-          title: f.title_ar,
-          description: f.description_ar || '',
-        })) as any);
-        setFromDb(true);
-      }
+      if (data && data.length > 0) mapData(data);
     });
+
+    const channel = supabase.channel('features-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'project_features' }, () => {
+        supabase.from('project_features').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
+          if (data && data.length > 0) mapData(data);
+          else { setFeatures(defaultFeatures); setFromDb(false); }
+        });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   return (
