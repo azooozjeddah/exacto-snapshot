@@ -139,6 +139,39 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: number
+          is_read: boolean
+          message: string
+          name: string
+          send_method: string
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: number
+          is_read?: boolean
+          message: string
+          name: string
+          send_method?: string
+          subject: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: number
+          is_read?: boolean
+          message?: string
+          name?: string
+          send_method?: string
+          subject?: string
+        }
+        Relationships: []
+      }
       gallery_photos: {
         Row: {
           alt_text_ar: string | null
