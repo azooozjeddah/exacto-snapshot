@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound.tsx";
 import AdminLogin from "./pages/admin/AdminLogin.tsx";
 import AdminLayout from "./layouts/AdminLayout.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
+import AdminSettings from "./pages/admin/AdminSettings.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
 
 const queryClient = new QueryClient();
@@ -30,7 +31,7 @@ const App = () => (
             }
           >
             <Route index element={<AdminDashboard />} />
-            <Route path="settings" element={<div className="text-gray-500">صفحة الإعدادات - قريباً</div>} />
+            <Route path="settings" element={<AdminSettings />} />
             <Route path="photos" element={<div className="text-gray-500">صفحة معرض الصور - قريباً</div>} />
             <Route path="tenants" element={<div className="text-gray-500">صفحة المستأجرون - قريباً</div>} />
             <Route path="features" element={<div className="text-gray-500">صفحة ميزات المشروع - قريباً</div>} />
