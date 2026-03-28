@@ -26,6 +26,8 @@ import ReportsPage from "./pages/admin/accounting/ReportsPage.tsx";
 import AttachmentsPage from "./pages/admin/accounting/AttachmentsPage.tsx";
 import AuditTrailPage from "./pages/admin/accounting/AuditTrailPage.tsx";
 import AdminMessages from "./pages/admin/AdminMessages.tsx";
+import AccountingRedirect from "./pages/AccountingRedirect.tsx";
+import AccountantRedirect from "./pages/AccountantRedirect.tsx";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +67,8 @@ const App = () => (
             <Route path="accounting/attachments" element={<AttachmentsPage />} />
             <Route path="accounting/audit" element={<AuditTrailPage />} />
           </Route>
+          <Route path="/accounting" element={<AccountingRedirect />} />
+          <Route path="/accountant" element={<AccountantRedirect />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
