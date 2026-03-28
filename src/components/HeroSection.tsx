@@ -12,7 +12,7 @@ const navLinks: { href: string; label: string; external?: boolean }[] = [
   { href: "#gallery", label: "معرض الصور" },
   { href: "#experience", label: "التجربة" },
   { href: "#location", label: "الموقع" },
-  { href: "/admin/accounting", label: "النظام المحاسبي", external: true },
+  { href: "/accounting", label: "النظام المحاسبي", external: true },
 ];
 
 const HeroSection = () => {
