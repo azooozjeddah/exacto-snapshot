@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Pencil, Trash2, Loader2, Store, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, Loader2, Store, Upload, Search } from 'lucide-react';
 
 interface Tenant {
   id: number;
@@ -60,6 +60,7 @@ export default function AdminTenants() {
   const [uploading, setUploading] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [logoPreview, setLogoPreview] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetch = useCallback(async () => {
     setLoading(true);
@@ -133,6 +134,12 @@ export default function AdminTenants() {
   };
 
   const f = (key: keyof typeof form, value: string | number | boolean) => setForm((prev) => ({ ...prev, [key]: value }));
+
+  const filteredTenants = tenants.filter((t) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return t.name_ar.toLowerCase().includes(q) || (t.name_en?.toLowerCase().includes(q));
+  });
 
   return (
     <div>
