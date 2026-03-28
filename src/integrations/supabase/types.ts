@@ -14,7 +14,183 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gallery_photos: {
+        Row: {
+          alt_text_ar: string | null
+          alt_text_en: string | null
+          category: string
+          created_at: string
+          file_key: string | null
+          id: number
+          is_active: boolean
+          sort_order: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          alt_text_ar?: string | null
+          alt_text_en?: string | null
+          category?: string
+          created_at?: string
+          file_key?: string | null
+          id?: number
+          is_active?: boolean
+          sort_order?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          alt_text_ar?: string | null
+          alt_text_en?: string | null
+          category?: string
+          created_at?: string
+          file_key?: string | null
+          id?: number
+          is_active?: boolean
+          sort_order?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      project_features: {
+        Row: {
+          created_at: string
+          description_ar: string | null
+          description_en: string | null
+          icon: string | null
+          id: number
+          is_active: boolean
+          sort_order: number
+          title_ar: string
+          title_en: string | null
+          updated_at: string
+          value: string | null
+        }
+        Insert: {
+          created_at?: string
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: number
+          is_active?: boolean
+          sort_order?: number
+          title_ar: string
+          title_en?: string | null
+          updated_at?: string
+          value?: string | null
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string | null
+          description_en?: string | null
+          icon?: string | null
+          id?: number
+          is_active?: boolean
+          sort_order?: number
+          title_ar?: string
+          title_en?: string | null
+          updated_at?: string
+          value?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          created_at: string
+          id: number
+          setting_group: string
+          setting_key: string
+          setting_type: string
+          updated_at: string
+          value_ar: string | null
+          value_en: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          setting_group?: string
+          setting_key: string
+          setting_type?: string
+          updated_at?: string
+          value_ar?: string | null
+          value_en?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          setting_group?: string
+          setting_key?: string
+          setting_type?: string
+          updated_at?: string
+          value_ar?: string | null
+          value_en?: string | null
+        }
+        Relationships: []
+      }
+      tenants: {
+        Row: {
+          created_at: string
+          description_ar: string | null
+          description_en: string | null
+          floor_number: string | null
+          id: number
+          is_active: boolean
+          logo_file_key: string | null
+          logo_url: string | null
+          menu_url: string | null
+          name_ar: string
+          name_en: string | null
+          phone_number: string | null
+          sort_order: number
+          type: string
+          unit_number: string | null
+          updated_at: string
+          website_url: string | null
+          working_hours: string | null
+        }
+        Insert: {
+          created_at?: string
+          description_ar?: string | null
+          description_en?: string | null
+          floor_number?: string | null
+          id?: number
+          is_active?: boolean
+          logo_file_key?: string | null
+          logo_url?: string | null
+          menu_url?: string | null
+          name_ar: string
+          name_en?: string | null
+          phone_number?: string | null
+          sort_order?: number
+          type?: string
+          unit_number?: string | null
+          updated_at?: string
+          website_url?: string | null
+          working_hours?: string | null
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string | null
+          description_en?: string | null
+          floor_number?: string | null
+          id?: number
+          is_active?: boolean
+          logo_file_key?: string | null
+          logo_url?: string | null
+          menu_url?: string | null
+          name_ar?: string
+          name_en?: string | null
+          phone_number?: string | null
+          sort_order?: number
+          type?: string
+          unit_number?: string | null
+          updated_at?: string
+          website_url?: string | null
+          working_hours?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
