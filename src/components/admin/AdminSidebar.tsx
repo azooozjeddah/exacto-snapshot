@@ -3,8 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import {
   LayoutDashboard, Settings, ImageIcon, Store, Star, Search, LogOut, ExternalLink,
-  User, Users, X, Calculator, BookOpen, FileText, ShoppingCart, Truck, Handshake,
-  BarChart3, Paperclip, Shield, MessageSquare,
+  User, Users, X, MessageSquare,
 } from 'lucide-react';
 
 const navItems = [
@@ -17,18 +16,6 @@ const navItems = [
   { label: 'إدارة المستخدمين', icon: Users, to: '/admin/users', page: 'users' },
   { label: 'الرسائل والاستفسارات', icon: MessageSquare, to: '/admin/messages', page: 'messages' },
   { label: 'الملف الشخصي', icon: User, to: '/admin/profile', page: 'profile' },
-];
-
-const accountingItems = [
-  { label: 'النظام المحاسبي', icon: Calculator, to: '/admin/accounting', end: true, page: 'accounting' },
-  { label: 'دليل الحسابات', icon: BookOpen, to: '/admin/accounting/accounts', page: 'accounts' },
-  { label: 'الفواتير', icon: FileText, to: '/admin/accounting/invoices', page: 'invoices' },
-  { label: 'المشتريات', icon: ShoppingCart, to: '/admin/accounting/purchases', page: 'purchases' },
-  { label: 'الموردون', icon: Truck, to: '/admin/accounting/suppliers', page: 'suppliers' },
-  { label: 'الشركاء', icon: Handshake, to: '/admin/accounting/partners', page: 'partners' },
-  { label: 'التقارير المالية', icon: BarChart3, to: '/admin/accounting/reports', page: 'reports' },
-  { label: 'المستندات', icon: Paperclip, to: '/admin/accounting/attachments', page: 'attachments' },
-  { label: 'سجل التدقيق', icon: Shield, to: '/admin/accounting/audit', page: 'audit' },
 ];
 
 interface Props {
@@ -47,7 +34,6 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
   };
 
   const visibleItems = navItems.filter((item) => canAccess(item.page));
-  const visibleAccounting = accountingItems.filter((item) => canAccess(item.page));
 
   const renderNavItem = (item: typeof navItems[0]) => (
     <NavLink
@@ -90,15 +76,6 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {visibleItems.map(renderNavItem)}
-
-          {visibleAccounting.length > 0 && (
-            <>
-              <div className="pt-4 pb-2 px-4">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">المحاسبة</p>
-              </div>
-              {visibleAccounting.map(renderNavItem)}
-            </>
-          )}
 
           <a
             href="/"
