@@ -4,7 +4,7 @@ import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Plus, ImageIcon, Loader2, Upload, Pencil } from 'lucide-react';
+import { Plus, ImageIcon, Upload, Pencil } from 'lucide-react';
 import PhotoGrid from '@/components/admin/PhotoGrid';
 import PhotoUploadDialog, { type PhotoForm } from '@/components/admin/PhotoUploadDialog';
 
@@ -20,40 +20,61 @@ interface Photo {
 }
 
 const tabs = [
-  { value: 'gallery', label: 'معرض الصور', prefix: 'gallery' },
-  { value: 'tour', label: 'جولة في المشروع', prefix: 'tour' },
-  { value: 'hero', label: 'الصورة الرئيسية', prefix: 'hero' },
-  { value: 'experience', label: 'صور التجربة', prefix: 'experience' },
+  { value: 'gallery', label: 'معرض الصور' },
+  { value: 'project_tour', label: 'جولة في المشروع' },
+  { value: 'hero', label: 'الصورة الرئيسية' },
+  { value: 'experience', label: 'صور التجربة' },
 ];
 
 const subCategories: Record<string, { value: string; label: string }[]> = {
   gallery: [
-    { value: 'gallery_general', label: 'عام' },
+    { value: 'general', label: 'عام' },
+    { value: 'gallery_general', label: 'عام جديد' },
     { value: 'gallery_interior', label: 'داخلي' },
     { value: 'gallery_exterior', label: 'خارجي' },
     { value: 'gallery_night', label: 'ليلي' },
     { value: 'gallery_aerial', label: 'جوي' },
   ],
-  tour: [{ value: 'tour_general', label: 'عام' }],
-  hero: [{ value: 'hero_main', label: 'رئيسية' }],
-  experience: [{ value: 'experience_general', label: 'عام' }],
+  project_tour: [{ value: 'project_tour', label: 'جولة المشروع' }],
+  hero: [{ value: 'hero', label: 'رئيسية' }],
+  experience: [{ value: 'experience', label: 'عام' }],
 };
 
 const catLabel = (v: string) => {
-  for (const cats of Object.values(subCategories)) {
-    const found = cats.find((c) => c.value === v);
-    if (found) return found.label;
-  }
-  // Legacy categories
-  const legacy: Record<string, string> = { general: 'عام', interior: 'داخلي', exterior: 'خارجي', night: 'ليلي', aerial: 'جوي' };
-  return legacy[v] || v;
+  const labels: Record<string, string> = {
+    general: 'عام',
+    gallery_general: 'عام',
+    gallery_interior: 'داخلي',
+    gallery_exterior: 'خارجي',
+    gallery_night: 'ليلي',
+    gallery_aerial: 'جوي',
+    project_tour: 'جولة المشروع',
+    tour_general: 'جولة المشروع',
+    hero: 'رئيسية',
+    hero_main: 'رئيسية',
+    experience: 'التجربة',
+    experience_general: 'التجربة',
+  };
+  return labels[v] || v;
 };
 
 const emptyForm = (tab: string): PhotoForm => ({
-  url: '', file_key: '', alt_text_ar: '', alt_text_en: '',
-  category: subCategories[tab]?.[0]?.value || `${tab}_general`,
-  sort_order: 0, is_active: true,
+  url: '',
+  file_key: '',
+  alt_text_ar: '',
+  alt_text_en: '',
+  category: subCategories[tab]?.[0]?.value || 'general',
+  sort_order: 0,
+  is_active: true,
 });
+
+const matchesTabCategory = (photo: Photo, tab: string) => {
+  if (tab === 'gallery') return photo.category === 'general' || photo.category === 'gallery' || photo.category.startsWith('gallery_');
+  if (tab === 'project_tour') return photo.category === 'project_tour' || photo.category.startsWith('tour_');
+  if (tab === 'hero') return photo.category === 'hero' || photo.category === 'hero_main';
+  if (tab === 'experience') return photo.category === 'experience' || photo.category.startsWith('experience_');
+  return false;
+};
 
 export default function AdminPhotos() {
   const [activeTab, setActiveTab] = useState('gallery');
@@ -66,21 +87,20 @@ export default function AdminPhotos() {
 
   const fetchPhotos = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('gallery_photos').select('*').order('sort_order');
-    if (error) toast({ title: 'خطأ', description: 'فشل تحميل الصور', variant: 'destructive' });
-    else setAllPhotos(data ?? []);
+    const { data, error } = await supabase.from('gallery_photos').select('*').order('sort_order').order('created_at');
+    if (error) {
+      console.error('[admin/photos] fetch error', error);
+      toast({ title: 'خطأ', description: 'فشل تحميل الصور', variant: 'destructive' });
+    } else {
+      console.log('[admin/photos] fetched', data);
+      setAllPhotos(data ?? []);
+    }
     setLoading(false);
   }, []);
 
   useEffect(() => { fetchPhotos(); }, [fetchPhotos]);
 
-  // Filter photos for current tab - gallery tab also shows legacy categories
-  const tabPhotos = allPhotos.filter((p) => {
-    if (activeTab === 'gallery') {
-      return p.category.startsWith('gallery_') || !p.category.includes('_');
-    }
-    return p.category.startsWith(`${activeTab}_`);
-  });
+  const tabPhotos = allPhotos.filter((p) => matchesTabCategory(p, activeTab));
 
   const openAdd = () => {
     setEditId(null);
@@ -90,7 +110,15 @@ export default function AdminPhotos() {
 
   const openEdit = (p: Photo) => {
     setEditId(p.id);
-    setForm({ url: p.url, file_key: p.file_key || '', alt_text_ar: p.alt_text_ar || '', alt_text_en: p.alt_text_en || '', category: p.category, sort_order: p.sort_order, is_active: p.is_active });
+    setForm({
+      url: p.url,
+      file_key: p.file_key || '',
+      alt_text_ar: p.alt_text_ar || '',
+      alt_text_en: p.alt_text_en || '',
+      category: p.category,
+      sort_order: p.sort_order,
+      is_active: p.is_active,
+    });
     setDialogOpen(true);
   };
 
@@ -100,20 +128,33 @@ export default function AdminPhotos() {
     if (photo?.file_key) await supabase.storage.from('media').remove([photo.file_key]);
     const { error } = await supabase.from('gallery_photos').delete().eq('id', deleteId);
     if (error) toast({ title: 'خطأ', description: 'فشل حذف الصورة', variant: 'destructive' });
-    else { toast({ title: 'تم', description: 'تم حذف الصورة ✓' }); fetchPhotos(); }
+    else {
+      toast({ title: 'تم', description: 'تم حذف الصورة ✓' });
+      fetchPhotos();
+    }
     setDeleteId(null);
   };
 
-  // Hero tab: single image UI
-  const heroPhoto = allPhotos.find((p) => p.category === 'hero_main');
+  const heroPhoto = allPhotos.find((p) => matchesTabCategory(p, 'hero'));
 
   const handleHeroUpload = async (file: File) => {
     const ext = file.name.split('.').pop();
     const path = `hero/${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from('media').upload(path, file);
-    if (error) { toast({ title: 'خطأ', description: 'فشل رفع الصورة', variant: 'destructive' }); return; }
+    if (error) {
+      toast({ title: 'خطأ', description: 'فشل رفع الصورة', variant: 'destructive' });
+      return;
+    }
     const { data: urlData } = supabase.storage.from('media').getPublicUrl(path);
-    const payload = { url: urlData.publicUrl, file_key: path, alt_text_ar: 'الصورة الرئيسية', category: 'hero_main', sort_order: 0, is_active: true };
+    const payload = {
+      url: urlData.publicUrl,
+      file_key: path,
+      alt_text_ar: 'الصورة الرئيسية',
+      alt_text_en: 'Hero Background',
+      category: 'hero',
+      sort_order: 0,
+      is_active: true,
+    };
 
     if (heroPhoto) {
       if (heroPhoto.file_key) await supabase.storage.from('media').remove([heroPhoto.file_key]);
@@ -143,8 +184,7 @@ export default function AdminPhotos() {
           ))}
         </TabsList>
 
-        {/* Gallery, Tour, Experience tabs */}
-        {['gallery', 'tour', 'experience'].map((tab) => (
+        {['gallery', 'project_tour', 'experience'].map((tab) => (
           <TabsContent key={tab} value={tab}>
             <div className="flex items-center justify-between mb-4">
               <p className="text-sm text-gray-500">{tabPhotos.length} صورة</p>
@@ -164,7 +204,6 @@ export default function AdminPhotos() {
           </TabsContent>
         ))}
 
-        {/* Hero tab - single image */}
         <TabsContent value="hero">
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -177,27 +216,17 @@ export default function AdminPhotos() {
                       <p className="text-xs text-gray-400">انقر لتغيير الصورة</p>
                     </div>
                     <div className="flex gap-2">
-                      <Button
-                        variant="outline" size="sm"
-                        onClick={() => openEdit(heroPhoto)}
-                        className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
-                      >
+                      <Button variant="outline" size="sm" onClick={() => openEdit(heroPhoto)} className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10">
                         <Pencil className="h-4 w-4 ml-1" /> تعديل البيانات
                       </Button>
-                      <Button
-                        size="sm" className="bg-[#D4AF37] hover:bg-[#C4A030] text-white"
-                        onClick={() => document.getElementById('hero-upload')?.click()}
-                      >
+                      <Button size="sm" className="bg-[#D4AF37] hover:bg-[#C4A030] text-white" onClick={() => document.getElementById('hero-upload')?.click()}>
                         <Upload className="h-4 w-4 ml-1" /> تغيير الصورة
                       </Button>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div
-                  className="flex flex-col items-center justify-center py-20 cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => document.getElementById('hero-upload')?.click()}
-                >
+                <div className="flex flex-col items-center justify-center py-20 cursor-pointer hover:bg-gray-50 transition-colors" onClick={() => document.getElementById('hero-upload')?.click()}>
                   <ImageIcon className="h-16 w-16 text-gray-300 mb-4" />
                   <p className="text-gray-500 mb-2">لا توجد صورة رئيسية</p>
                   <p className="text-sm text-gray-400">انقر لرفع الصورة الرئيسية</p>
@@ -209,7 +238,6 @@ export default function AdminPhotos() {
         </TabsContent>
       </Tabs>
 
-      {/* Photo Dialog */}
       <PhotoUploadDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
@@ -219,10 +247,9 @@ export default function AdminPhotos() {
         onSaved={fetchPhotos}
         categories={subCategories[activeTab] || []}
         showCategorySelect={activeTab === 'gallery'}
-        storagePath={activeTab}
+        storagePath={activeTab === 'project_tour' ? 'tour' : activeTab}
       />
 
-      {/* Delete Confirmation */}
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent dir="rtl">
           <AlertDialogHeader>

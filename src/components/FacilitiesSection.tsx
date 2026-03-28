@@ -15,22 +15,29 @@ const FacilitiesSection = () => {
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetch = () => {
-      supabase.from('gallery_photos').select('*').like('category', 'tour_%').eq('is_active', true).order('sort_order')
-        .then(({ data }) => {
-          if (data && data.length > 0) {
-            setFacilities(data.map((p) => ({
-              src: p.url,
-              title: p.alt_text_ar || '',
-              subtitle: p.alt_text_en || '',
-            })));
-          }
-        });
+    const fetchFacilities = async () => {
+      const { data, error } = await supabase
+        .from('gallery_photos')
+        .select('*')
+        .or('category.eq.project_tour,category.like.tour_%')
+        .eq('is_active', true)
+        .order('sort_order');
+
+      console.log('[project_tour] fetched photos', data, error);
+      if (data && data.length > 0) {
+        setFacilities(data.map((p) => ({
+          src: p.url,
+          title: p.alt_text_ar || '',
+          subtitle: p.alt_text_en || '',
+        })));
+      } else {
+        setFacilities(defaultFacilities);
+      }
     };
-    fetch();
+    fetchFacilities();
 
     const channel = supabase.channel('tour-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_photos' }, fetch)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_photos' }, fetchFacilities)
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
