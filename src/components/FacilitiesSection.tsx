@@ -19,7 +19,7 @@ const FacilitiesSection = () => {
       const { data, error } = await supabase
         .from('gallery_photos')
         .select('*')
-        .or('category.eq.project_tour,category.like.tour_%')
+        .eq('category', 'project_tour')
         .eq('is_active', true)
         .order('sort_order');
 

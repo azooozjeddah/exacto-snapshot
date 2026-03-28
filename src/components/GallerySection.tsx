@@ -29,7 +29,7 @@ const GallerySection = () => {
       const { data, error } = await supabase
         .from('gallery_photos')
         .select('*')
-        .or('category.eq.general,category.eq.gallery,category.like.gallery_%')
+        .eq('category', 'general')
         .eq('is_active', true)
         .order('sort_order');
 
