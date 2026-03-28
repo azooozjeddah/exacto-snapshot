@@ -17,6 +17,9 @@ const routePageMap: Record<string, string> = {
   '/admin/accounting/purchases': 'purchases',
   '/admin/accounting/suppliers': 'suppliers',
   '/admin/accounting/partners': 'partners',
+  '/admin/accounting/reports': 'reports',
+  '/admin/accounting/attachments': 'attachments',
+  '/admin/accounting/audit': 'audit',
 };
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
