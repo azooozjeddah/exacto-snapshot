@@ -6,13 +6,12 @@ import { Menu, X } from "lucide-react";
 import heroBgFallback from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo-transparent.png";
 
-const navLinks = [
+const navLinks: { href: string; label: string; external?: boolean }[] = [
   { href: "#features", label: "مميزات المشروع" },
   { href: "#partners", label: "المحلات والمطاعم" },
   { href: "#gallery", label: "معرض الصور" },
   { href: "#experience", label: "التجربة" },
   { href: "#location", label: "الموقع" },
-  { href: "#contact", label: "تواصل معنا" },
   { href: "/admin/accounting", label: "النظام المحاسبي", external: true },
 ];
 
