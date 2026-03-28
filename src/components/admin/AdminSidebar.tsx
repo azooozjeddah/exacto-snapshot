@@ -4,7 +4,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import {
   LayoutDashboard, Settings, ImageIcon, Store, Star, Search, LogOut, ExternalLink,
   User, Users, X, Calculator, BookOpen, FileText, ShoppingCart, Truck, Handshake,
-  BarChart3, Paperclip, Shield,
+  BarChart3, Paperclip, Shield, MessageSquare,
 } from 'lucide-react';
 
 const navItems = [
@@ -15,6 +15,7 @@ const navItems = [
   { label: 'ميزات المشروع', icon: Star, to: '/admin/features', page: 'features' },
   { label: 'تحسين SEO', icon: Search, to: '/admin/seo', page: 'seo' },
   { label: 'إدارة المستخدمين', icon: Users, to: '/admin/users', page: 'users' },
+  { label: 'الرسائل والاستفسارات', icon: MessageSquare, to: '/admin/messages', page: 'messages' },
   { label: 'الملف الشخصي', icon: User, to: '/admin/profile', page: 'profile' },
 ];
 

@@ -5,7 +5,7 @@ import { useAuth } from './useAuth';
 export type AppRole = 'admin' | 'photo_manager' | 'tenant_manager' | 'features_manager' | 'settings_manager' | 'accountant' | 'data_entry';
 
 const rolePageMap: Record<AppRole, string[]> = {
-  admin: ['dashboard', 'photos', 'tenants', 'features', 'settings', 'seo', 'users', 'profile',
+  admin: ['dashboard', 'photos', 'tenants', 'features', 'settings', 'seo', 'users', 'profile', 'messages',
     'accounting', 'accounts', 'invoices', 'purchases', 'suppliers', 'partners', 'reports', 'attachments', 'audit'],
   photo_manager: ['dashboard', 'photos', 'profile'],
   tenant_manager: ['dashboard', 'tenants', 'profile'],
