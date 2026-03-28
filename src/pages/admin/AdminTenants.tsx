@@ -191,7 +191,7 @@ export default function AdminTenants() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tenants.map((t) => (
+              {filteredTenants.map((t) => (
                 <TableRow key={t.id}>
                   <TableCell>
                     {t.logo_url ? (
