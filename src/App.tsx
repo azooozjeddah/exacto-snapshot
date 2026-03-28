@@ -13,6 +13,7 @@ import AdminPhotos from "./pages/admin/AdminPhotos.tsx";
 import AdminTenants from "./pages/admin/AdminTenants.tsx";
 import AdminFeatures from "./pages/admin/AdminFeatures.tsx";
 import AdminSeo from "./pages/admin/AdminSeo.tsx";
+import AdminUsers from "./pages/admin/AdminUsers.tsx";
 import AdminProfile from "./pages/admin/AdminProfile.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
 
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="tenants" element={<AdminTenants />} />
             <Route path="features" element={<AdminFeatures />} />
             <Route path="seo" element={<AdminSeo />} />
+            <Route path="users" element={<AdminUsers />} />
             <Route path="profile" element={<AdminProfile />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
