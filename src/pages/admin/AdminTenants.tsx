@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Pencil, Trash2, Loader2, Store, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, Loader2, Store, Upload, Search } from 'lucide-react';
 
 interface Tenant {
   id: number;
@@ -60,6 +60,7 @@ export default function AdminTenants() {
   const [uploading, setUploading] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [logoPreview, setLogoPreview] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetch = useCallback(async () => {
     setLoading(true);
@@ -134,6 +135,12 @@ export default function AdminTenants() {
 
   const f = (key: keyof typeof form, value: string | number | boolean) => setForm((prev) => ({ ...prev, [key]: value }));
 
+  const filteredTenants = tenants.filter((t) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return t.name_ar.toLowerCase().includes(q) || (t.name_en?.toLowerCase().includes(q));
+  });
+
   return (
     <div>
       {/* Toolbar */}
@@ -142,7 +149,11 @@ export default function AdminTenants() {
           <h1 className="text-2xl font-bold text-gray-900">المستأجرون</h1>
           <p className="text-sm text-gray-500">{tenants.length} مستأجر</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="relative">
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="بحث بالاسم..." className="w-[180px] bg-white border-gray-200 text-gray-700 pr-9" />
+          </div>
           <Select value={filter} onValueChange={setFilter}>
             <SelectTrigger className="w-[140px] bg-white border-gray-200 text-gray-700"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -180,7 +191,7 @@ export default function AdminTenants() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tenants.map((t) => (
+              {filteredTenants.map((t) => (
                 <TableRow key={t.id}>
                   <TableCell>
                     {t.logo_url ? (
