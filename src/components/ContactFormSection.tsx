@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Clock, MessageSquare } from "lucide-react";
+import { Send, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,59 +8,39 @@ import { useToast } from "@/hooks/use-toast";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { supabase } from "@/integrations/supabase/client";
 
-const sendMethods = [
-  { value: "whatsapp", label: "إرسال عبر واتساب", labelEn: "Send via WhatsApp", icon: "💬" },
-  { value: "system", label: "إرسال للنظام", labelEn: "Send to Inbox", icon: "📥" },
-];
-
 const ContactFormSection = () => {
   const { toast } = useToast();
   const { get } = useSiteSettings();
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "", sendMethod: "" });
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
 
   const whatsapp = get('whatsapp_number') || '966555610198';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.subject.trim() || !form.message.trim() || !form.sendMethod) {
+    if (!form.name.trim() || !form.email.trim() || !form.subject.trim() || !form.message.trim()) {
       toast({ title: "يرجى تعبئة جميع الحقول المطلوبة", variant: "destructive" });
       return;
     }
-
     setSending(true);
 
-    if (form.sendMethod === "whatsapp") {
-      const text = encodeURIComponent(
-        `📩 استفسار جديد\n\nالاسم: ${form.name}\nالبريد: ${form.email}\nالموضوع: ${form.subject}\nالرسالة: ${form.message}`
-      );
-      window.open(`https://wa.me/${whatsapp}?text=${text}`, "_blank");
-      // Also save to DB
-      await supabase.from("contact_messages").insert({
-        name: form.name.trim(),
-        email: form.email.trim(),
-        subject: form.subject.trim(),
-        message: form.message.trim(),
-        send_method: "whatsapp",
-      });
-      toast({ title: "تم إرسال استفسارك بنجاح عبر واتساب ✓" });
-    } else {
-      const { error } = await supabase.from("contact_messages").insert({
-        name: form.name.trim(),
-        email: form.email.trim(),
-        subject: form.subject.trim(),
-        message: form.message.trim(),
-        send_method: "system",
-      });
-      if (error) {
-        toast({ title: "حدث خطأ في إرسال الرسالة", variant: "destructive" });
-        setSending(false);
-        return;
-      }
-      toast({ title: "تم إرسال رسالتك بنجاح وسيتم الرد عليك قريباً ✓" });
-    }
+    // Save to database
+    await supabase.from("contact_messages").insert({
+      name: form.name.trim(),
+      email: form.email.trim(),
+      subject: form.subject.trim(),
+      message: form.message.trim(),
+      send_method: "both",
+    });
 
-    setForm({ name: "", email: "", subject: "", message: "", sendMethod: "" });
+    // Send via WhatsApp
+    const text = encodeURIComponent(
+      `📩 استفسار جديد\n\nالاسم: ${form.name}\nالبريد: ${form.email}\nالموضوع: ${form.subject}\nالرسالة: ${form.message}`
+    );
+    window.open(`https://wa.me/${whatsapp}?text=${text}`, "_blank");
+
+    toast({ title: "شكراً! تم استقبال رسالتك. سيتم الرد عليك قريباً ✓" });
+    setForm({ name: "", email: "", subject: "", message: "" });
     setSending(false);
   };
 
@@ -99,44 +79,16 @@ const ContactFormSection = () => {
               <Input id="c-email" type="email" placeholder="example@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} className="bg-secondary border-border focus:border-primary" dir="ltr" />
             </div>
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="c-subject" className="text-foreground">الموضوع / Subject *</Label>
             <Input id="c-subject" placeholder="موضوع الاستفسار" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} maxLength={200} className="bg-secondary border-border focus:border-primary" />
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="c-message" className="text-foreground">الرسالة / Message *</Label>
             <Textarea id="c-message" placeholder="اكتب رسالتك أو استفسارك هنا..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} maxLength={2000} className="bg-secondary border-border focus:border-primary min-h-[120px]" />
           </div>
-
-          <div className="space-y-2">
-            <Label className="text-foreground">طريقة الإرسال / Send Method *</Label>
-            <div className="flex flex-wrap gap-3">
-              {sendMethods.map((method) => (
-                <button
-                  key={method.value}
-                  type="button"
-                  onClick={() => setForm({ ...form, sendMethod: method.value })}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-xl border text-sm transition-all ${
-                    form.sendMethod === method.value
-                      ? "bg-primary text-primary-foreground border-primary shadow-lg"
-                      : "bg-secondary text-foreground border-border hover:border-primary/50"
-                  }`}
-                >
-                  <span className="text-lg">{method.icon}</span>
-                  <div className="text-right">
-                    <p className="font-medium">{method.label}</p>
-                    <p className="text-xs opacity-75">{method.labelEn}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
           <Button type="submit" disabled={sending} className="w-full bg-gold-gradient text-primary-foreground font-bold text-lg py-6 rounded-xl hover:opacity-90 transition-opacity">
-            <Send className="w-5 h-5 ml-2" />
-            {form.sendMethod === "whatsapp" ? "إرسال عبر واتساب" : form.sendMethod === "system" ? "إرسال للنظام" : "إرسال / Send"}
+            <Send className="w-5 h-5 ml-2" /> إرسال / Send
           </Button>
         </form>
       </div>
