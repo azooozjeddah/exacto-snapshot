@@ -25,6 +25,7 @@ import PartnersList from "./pages/admin/accounting/PartnersList.tsx";
 import ReportsPage from "./pages/admin/accounting/ReportsPage.tsx";
 import AttachmentsPage from "./pages/admin/accounting/AttachmentsPage.tsx";
 import AuditTrailPage from "./pages/admin/accounting/AuditTrailPage.tsx";
+import AdminMessages from "./pages/admin/AdminMessages.tsx";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="seo" element={<AdminSeo />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="profile" element={<AdminProfile />} />
+            <Route path="messages" element={<AdminMessages />} />
             <Route path="accounting" element={<AccountingDashboard />} />
             <Route path="accounting/accounts" element={<AccountsList />} />
             <Route path="accounting/invoices" element={<InvoicesList />} />
