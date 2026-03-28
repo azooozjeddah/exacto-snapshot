@@ -11,6 +11,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminSettings from "./pages/admin/AdminSettings.tsx";
 import AdminPhotos from "./pages/admin/AdminPhotos.tsx";
 import AdminTenants from "./pages/admin/AdminTenants.tsx";
+import AdminFeatures from "./pages/admin/AdminFeatures.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
 
 const queryClient = new QueryClient();
@@ -36,7 +37,7 @@ const App = () => (
             <Route path="settings" element={<AdminSettings />} />
             <Route path="photos" element={<AdminPhotos />} />
             <Route path="tenants" element={<AdminTenants />} />
-            <Route path="features" element={<div className="text-gray-500">صفحة ميزات المشروع - قريباً</div>} />
+            <Route path="features" element={<AdminFeatures />} />
             <Route path="seo" element={<div className="text-gray-500">صفحة تحسين SEO - قريباً</div>} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
