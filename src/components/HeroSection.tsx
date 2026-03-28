@@ -24,7 +24,7 @@ const HeroSection = () => {
       const { data, error } = await supabase
         .from('gallery_photos')
         .select('url, category')
-        .in('category', ['hero', 'hero_main'])
+        .eq('category', 'hero')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .limit(1);

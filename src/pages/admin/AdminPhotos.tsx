@@ -27,14 +27,7 @@ const tabs = [
 ];
 
 const subCategories: Record<string, { value: string; label: string }[]> = {
-  gallery: [
-    { value: 'general', label: 'عام' },
-    { value: 'gallery_general', label: 'عام جديد' },
-    { value: 'gallery_interior', label: 'داخلي' },
-    { value: 'gallery_exterior', label: 'خارجي' },
-    { value: 'gallery_night', label: 'ليلي' },
-    { value: 'gallery_aerial', label: 'جوي' },
-  ],
+  gallery: [{ value: 'general', label: 'معرض الصور' }],
   project_tour: [{ value: 'project_tour', label: 'جولة المشروع' }],
   hero: [{ value: 'hero', label: 'رئيسية' }],
   experience: [{ value: 'experience', label: 'عام' }],
@@ -42,18 +35,10 @@ const subCategories: Record<string, { value: string; label: string }[]> = {
 
 const catLabel = (v: string) => {
   const labels: Record<string, string> = {
-    general: 'عام',
-    gallery_general: 'عام',
-    gallery_interior: 'داخلي',
-    gallery_exterior: 'خارجي',
-    gallery_night: 'ليلي',
-    gallery_aerial: 'جوي',
+    general: 'معرض الصور',
     project_tour: 'جولة المشروع',
-    tour_general: 'جولة المشروع',
     hero: 'رئيسية',
-    hero_main: 'رئيسية',
     experience: 'التجربة',
-    experience_general: 'التجربة',
   };
   return labels[v] || v;
 };
@@ -69,10 +54,10 @@ const emptyForm = (tab: string): PhotoForm => ({
 });
 
 const matchesTabCategory = (photo: Photo, tab: string) => {
-  if (tab === 'gallery') return photo.category === 'general' || photo.category === 'gallery' || photo.category.startsWith('gallery_');
-  if (tab === 'project_tour') return photo.category === 'project_tour' || photo.category.startsWith('tour_');
-  if (tab === 'hero') return photo.category === 'hero' || photo.category === 'hero_main';
-  if (tab === 'experience') return photo.category === 'experience' || photo.category.startsWith('experience_');
+  if (tab === 'gallery') return photo.category === 'general';
+  if (tab === 'project_tour') return photo.category === 'project_tour';
+  if (tab === 'hero') return photo.category === 'hero';
+  if (tab === 'experience') return photo.category === 'experience';
   return false;
 };
 

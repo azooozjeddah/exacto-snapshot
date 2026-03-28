@@ -30,7 +30,7 @@ const ExperienceSection = () => {
       const { data, error } = await supabase
         .from('gallery_photos')
         .select('*')
-        .or('category.eq.experience,category.like.experience_%')
+        .eq('category', 'experience')
         .eq('is_active', true)
         .order('sort_order');
 
