@@ -22,6 +22,9 @@ import InvoicesList from "./pages/admin/accounting/InvoicesList.tsx";
 import PurchasesList from "./pages/admin/accounting/PurchasesList.tsx";
 import SuppliersList from "./pages/admin/accounting/SuppliersList.tsx";
 import PartnersList from "./pages/admin/accounting/PartnersList.tsx";
+import ReportsPage from "./pages/admin/accounting/ReportsPage.tsx";
+import AttachmentsPage from "./pages/admin/accounting/AttachmentsPage.tsx";
+import AuditTrailPage from "./pages/admin/accounting/AuditTrailPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +59,9 @@ const App = () => (
             <Route path="accounting/purchases" element={<PurchasesList />} />
             <Route path="accounting/suppliers" element={<SuppliersList />} />
             <Route path="accounting/partners" element={<PartnersList />} />
+            <Route path="accounting/reports" element={<ReportsPage />} />
+            <Route path="accounting/attachments" element={<AttachmentsPage />} />
+            <Route path="accounting/audit" element={<AuditTrailPage />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

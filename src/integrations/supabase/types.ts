@@ -64,6 +64,81 @@ export type Database = {
           },
         ]
       }
+      attachments: {
+        Row: {
+          created_at: string
+          file_key: string | null
+          file_name: string
+          file_size: number | null
+          file_type: string | null
+          file_url: string
+          id: number
+          related_id: number
+          related_type: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_key?: string | null
+          file_name: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url: string
+          id?: number
+          related_id: number
+          related_type: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_key?: string | null
+          file_name?: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string
+          id?: number
+          related_id?: number
+          related_type?: string
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          entity_id: number | null
+          entity_type: string
+          id: number
+          ip_address: string | null
+          user_email: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          entity_id?: number | null
+          entity_type: string
+          id?: number
+          ip_address?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          entity_id?: number | null
+          entity_type?: string
+          id?: number
+          ip_address?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       gallery_photos: {
         Row: {
           alt_text_ar: string | null

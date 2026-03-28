@@ -6,13 +6,13 @@ export type AppRole = 'admin' | 'photo_manager' | 'tenant_manager' | 'features_m
 
 const rolePageMap: Record<AppRole, string[]> = {
   admin: ['dashboard', 'photos', 'tenants', 'features', 'settings', 'seo', 'users', 'profile',
-    'accounting', 'accounts', 'invoices', 'purchases', 'suppliers', 'partners'],
+    'accounting', 'accounts', 'invoices', 'purchases', 'suppliers', 'partners', 'reports', 'attachments', 'audit'],
   photo_manager: ['dashboard', 'photos', 'profile'],
   tenant_manager: ['dashboard', 'tenants', 'profile'],
   features_manager: ['dashboard', 'features', 'profile'],
   settings_manager: ['dashboard', 'settings', 'seo', 'profile'],
-  accountant: ['dashboard', 'profile', 'accounting', 'accounts', 'invoices', 'purchases', 'suppliers', 'partners'],
-  data_entry: ['dashboard', 'profile', 'accounting', 'accounts', 'invoices', 'purchases'],
+  accountant: ['dashboard', 'profile', 'accounting', 'accounts', 'invoices', 'purchases', 'suppliers', 'partners', 'reports', 'attachments', 'audit'],
+  data_entry: ['dashboard', 'profile', 'accounting', 'accounts', 'invoices', 'purchases', 'attachments'],
 };
 
 export function useUserRole() {
