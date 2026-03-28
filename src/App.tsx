@@ -10,6 +10,7 @@ import AdminLayout from "./layouts/AdminLayout.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminSettings from "./pages/admin/AdminSettings.tsx";
 import AdminPhotos from "./pages/admin/AdminPhotos.tsx";
+import AdminTenants from "./pages/admin/AdminTenants.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
 
 const queryClient = new QueryClient();
