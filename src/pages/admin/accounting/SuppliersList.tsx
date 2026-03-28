@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { toast } from 'sonner';
+import TableToolbar, { exportToCSV } from '@/components/admin/accounting/TableToolbar';
 
 interface Supplier {
   id: number; name_ar: string; name_en: string | null; phone: string | null;
@@ -16,11 +20,13 @@ interface Supplier {
 const emptyForm = { name_ar: '', name_en: '', phone: '', email: '', address: '', tax_number: '' };
 
 export default function SuppliersList() {
+  const { user } = useAuth();
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Supplier | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [search, setSearch] = useState('');
 
   const fetch = async () => {
     setLoading(true);
@@ -30,6 +36,10 @@ export default function SuppliersList() {
   };
 
   useEffect(() => { fetch(); }, []);
+
+  const filtered = suppliers.filter(s =>
+    !search || s.name_ar.includes(search) || (s.name_en || '').toLowerCase().includes(search.toLowerCase()) || (s.phone || '').includes(search)
+  );
 
   const openNew = () => { setEditing(null); setForm(emptyForm); setDialogOpen(true); };
   const openEdit = (s: Supplier) => {
@@ -43,31 +53,33 @@ export default function SuppliersList() {
     const payload = { name_ar: form.name_ar, name_en: form.name_en || null, phone: form.phone || null, email: form.email || null, address: form.address || null, tax_number: form.tax_number || null };
     if (editing) {
       await supabase.from('suppliers').update(payload).eq('id', editing.id);
+      await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: 'update', entity_type: 'supplier', entity_id: editing.id, details: payload });
       toast.success('تم التحديث');
     } else {
       await supabase.from('suppliers').insert(payload);
+      await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: 'create', entity_type: 'supplier', details: payload });
       toast.success('تم الإضافة');
     }
     setDialogOpen(false); fetch();
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('هل أنت متأكد؟')) return;
-    await supabase.from('suppliers').delete().eq('id', id);
+  const handleDelete = async (s: Supplier) => {
+    await supabase.from('suppliers').delete().eq('id', s.id);
+    await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: 'delete', entity_type: 'supplier', entity_id: s.id, details: { name_ar: s.name_ar } });
     toast.success('تم الحذف'); fetch();
+  };
+
+  const handleExport = () => {
+    exportToCSV(['الاسم (عربي)', 'الاسم (إنجليزي)', 'الهاتف', 'البريد', 'الرقم الضريبي'],
+      filtered.map(s => [s.name_ar, s.name_en || '', s.phone || '', s.email || '', s.tax_number || '']), 'suppliers');
   };
 
   return (
     <div dir="rtl">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">الموردون</h2>
-          <p className="text-gray-500 text-sm">Suppliers</p>
-        </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+        <div><h2 className="text-2xl font-bold text-gray-900">الموردون</h2><p className="text-gray-500 text-sm">Suppliers</p></div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={openNew} className="bg-[#D4AF37] hover:bg-[#b8962e] text-white"><Plus className="h-4 w-4 ml-2" /> إضافة مورد</Button>
-          </DialogTrigger>
+          <DialogTrigger asChild><Button onClick={openNew} className="bg-[#D4AF37] hover:bg-[#b8962e] text-white"><Plus className="h-4 w-4 ml-2" /> إضافة مورد</Button></DialogTrigger>
           <DialogContent className="sm:max-w-md" dir="rtl">
             <DialogHeader><DialogTitle>{editing ? 'تعديل المورد' : 'إضافة مورد جديد'}</DialogTitle></DialogHeader>
             <div className="space-y-4 mt-4">
@@ -82,32 +94,35 @@ export default function SuppliersList() {
         </Dialog>
       </div>
 
+      <TableToolbar searchValue={search} onSearchChange={setSearch} searchPlaceholder="بحث بالاسم أو الهاتف..."
+        onExportCSV={handleExport} helpText="أضف وأدر الموردين هنا." helpTextEn="Add and manage your suppliers." />
+
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-right">الاسم</TableHead>
-              <TableHead className="text-right">الهاتف</TableHead>
-              <TableHead className="text-right">البريد</TableHead>
-              <TableHead className="text-right">الرقم الضريبي</TableHead>
-              <TableHead className="text-right">إجراءات</TableHead>
-            </TableRow>
-          </TableHeader>
+          <TableHeader><TableRow className="bg-gray-50/80">
+            <TableHead className="text-right font-bold">الاسم</TableHead><TableHead className="text-right font-bold">الهاتف</TableHead>
+            <TableHead className="text-right font-bold">البريد</TableHead><TableHead className="text-right font-bold">الرقم الضريبي</TableHead>
+            <TableHead className="text-right font-bold">إجراءات</TableHead>
+          </TableRow></TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={5} className="text-center py-8 text-gray-400">جاري التحميل...</TableCell></TableRow>
-            ) : suppliers.length === 0 ? (
+              <TableRow><TableCell colSpan={5} className="text-center py-8"><div className="w-6 h-6 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto" /></TableCell></TableRow>
+            ) : filtered.length === 0 ? (
               <TableRow><TableCell colSpan={5} className="text-center py-8 text-gray-400">لا يوجد موردون</TableCell></TableRow>
-            ) : suppliers.map(s => (
-              <TableRow key={s.id}>
+            ) : filtered.map(s => (
+              <TableRow key={s.id} className="hover:bg-gray-50/50 transition-colors">
                 <TableCell><div className="font-medium">{s.name_ar}</div>{s.name_en && <div className="text-xs text-gray-400" dir="ltr">{s.name_en}</div>}</TableCell>
                 <TableCell dir="ltr">{s.phone || '—'}</TableCell>
                 <TableCell dir="ltr">{s.email || '—'}</TableCell>
                 <TableCell dir="ltr">{s.tax_number || '—'}</TableCell>
                 <TableCell>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleDelete(s.id)} className="text-red-500"><Trash2 className="h-4 w-4" /></Button>
+                    <Tooltip><TooltipTrigger asChild><Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>تعديل</TooltipContent></Tooltip>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild><Button variant="ghost" size="icon" className="text-red-500"><Trash2 className="h-4 w-4" /></Button></AlertDialogTrigger>
+                      <AlertDialogContent dir="rtl"><AlertDialogHeader><AlertDialogTitle>تأكيد الحذف</AlertDialogTitle><AlertDialogDescription>هل أنت متأكد من حذف المورد "{s.name_ar}"؟</AlertDialogDescription></AlertDialogHeader>
+                        <AlertDialogFooter className="flex-row-reverse gap-2"><AlertDialogCancel>إلغاء</AlertDialogCancel><AlertDialogAction onClick={() => handleDelete(s)} className="bg-red-500 hover:bg-red-600">حذف</AlertDialogAction></AlertDialogFooter></AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </TableCell>
               </TableRow>
@@ -115,6 +130,7 @@ export default function SuppliersList() {
           </TableBody>
         </Table>
       </div>
+      <p className="text-xs text-gray-400 mt-2 text-center">عدد الموردين: {filtered.length}</p>
     </div>
   );
 }
