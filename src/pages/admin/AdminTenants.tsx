@@ -149,7 +149,11 @@ export default function AdminTenants() {
           <h1 className="text-2xl font-bold text-gray-900">المستأجرون</h1>
           <p className="text-sm text-gray-500">{tenants.length} مستأجر</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="relative">
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="بحث بالاسم..." className="w-[180px] bg-white border-gray-200 text-gray-700 pr-9" />
+          </div>
           <Select value={filter} onValueChange={setFilter}>
             <SelectTrigger className="w-[140px] bg-white border-gray-200 text-gray-700"><SelectValue /></SelectTrigger>
             <SelectContent>
