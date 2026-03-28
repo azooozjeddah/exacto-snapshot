@@ -35,7 +35,7 @@ const App = () => (
             <Route index element={<AdminDashboard />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="photos" element={<AdminPhotos />} />
-            <Route path="tenants" element={<div className="text-gray-500">صفحة المستأجرون - قريباً</div>} />
+            <Route path="tenants" element={<AdminTenants />} />
             <Route path="features" element={<div className="text-gray-500">صفحة ميزات المشروع - قريباً</div>} />
             <Route path="seo" element={<div className="text-gray-500">صفحة تحسين SEO - قريباً</div>} />
           </Route>
