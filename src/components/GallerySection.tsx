@@ -27,8 +27,12 @@ const GallerySection = () => {
   useEffect(() => {
     const fetchPhotos = () => {
       supabase.from('gallery_photos').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
-        if (data && data.length > 0) setImages(data.map((p) => ({ url: p.url, alt: p.alt_text_ar || 'The View Avenue' })));
-        else setImages(defaultImages);
+        if (data && data.length > 0) {
+          // Only show gallery and legacy categories (not hero_, tour_, experience_)
+          const galleryPhotos = data.filter(p => p.category.startsWith('gallery_') || !p.category.includes('_'));
+          if (galleryPhotos.length > 0) setImages(galleryPhotos.map((p) => ({ url: p.url, alt: p.alt_text_ar || 'The View Avenue' })));
+          else setImages(defaultImages);
+        } else setImages(defaultImages);
       });
     };
     fetchPhotos();
