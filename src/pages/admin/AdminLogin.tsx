@@ -1,30 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LogIn } from 'lucide-react';
+import { LogIn, Shield } from 'lucide-react';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { user, signIn } = useAuth();
+  const { role, loading: roleLoading } = useUserRole();
   const navigate = useNavigate();
+
+  // Auto-redirect if already logged in
+  useEffect(() => {
+    if (user && role && !roleLoading) {
+      if (role === 'admin') navigate('/admin', { replace: true });
+      else navigate('/accounting', { replace: true });
+    }
+  }, [user, role, roleLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
-    const { error } = await signIn(email, password);
-    if (error) {
-      setError('البريد الإلكتروني أو كلمة المرور غير صحيحة');
-    } else {
-      navigate('/admin');
+
+    if (!email.trim() || !password.trim()) {
+      setError('يرجى إدخال البريد الإلكتروني وكلمة المرور');
+      return;
     }
-    setLoading(false);
+
+    setLoading(true);
+    const { error: signInError } = await signIn(email.trim(), password);
+    if (signInError) {
+      setError('البريد الإلكتروني أو كلمة المرور غير صحيحة — Invalid credentials');
+      setLoading(false);
+    }
+    // Redirect handled by useEffect above after role loads
   };
 
   return (
@@ -32,10 +47,13 @@ export default function AdminLogin() {
       <div className="w-full max-w-md p-8">
         {/* Logo */}
         <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Shield className="h-8 w-8 text-[#D4AF37]" />
+          </div>
           <h1 className="text-3xl font-bold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
             The View Avenue
           </h1>
-          <p className="text-sm text-gray-500 mt-1">لوحة التحكم</p>
+          <p className="text-sm text-gray-500 mt-1">تسجيل الدخول الآمن — Secure Login</p>
         </div>
 
         {/* Card */}
@@ -44,28 +62,34 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-700 text-sm font-medium">البريد الإلكتروني</Label>
+              <Label htmlFor="email" className="text-gray-700 text-sm font-medium">
+                البريد الإلكتروني — Email
+              </Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@theviewavenue.com"
+                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                placeholder="user@theviewavenue.com"
                 required
+                maxLength={255}
                 className="bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12"
                 dir="ltr"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-700 text-sm font-medium">كلمة المرور</Label>
+              <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
+                كلمة المرور — Password
+              </Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); setError(''); }}
                 placeholder="••••••••"
                 required
+                maxLength={128}
                 className="bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 h-12"
                 dir="ltr"
               />
@@ -85,7 +109,7 @@ export default function AdminLogin() {
               ) : (
                 <>
                   <LogIn className="ml-2 h-5 w-5" />
-                  تسجيل الدخول
+                  تسجيل الدخول — Sign In
                 </>
               )}
             </Button>
@@ -93,7 +117,7 @@ export default function AdminLogin() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          © 2025 The View Avenue. جميع الحقوق محفوظة
+          © 2025 The View Avenue. جميع الحقوق محفوظة — All Rights Reserved
         </p>
       </div>
     </div>
