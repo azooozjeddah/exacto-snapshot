@@ -11,19 +11,31 @@ const defaultStats = [
 const StatsSection = () => {
   const [stats, setStats] = useState(defaultStats);
 
+  const mapData = (data: any[]) => {
+    const mapped = data.slice(0, 3).map((f) => ({
+      icon: Building2,
+      value: f.value || '',
+      label: f.title_ar,
+      sublabel: f.title_en || '',
+    }));
+    setStats(mapped);
+  };
+
   useEffect(() => {
     supabase.from('project_features').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
-      if (data && data.length > 0) {
-        // Use first 3 features as stats, keep location card separate
-        const mapped = data.slice(0, 3).map((f) => ({
-          icon: Building2, // fallback icon
-          value: f.value || '',
-          label: f.title_ar,
-          sublabel: f.title_en || '',
-        }));
-        setStats(mapped);
-      }
+      if (data && data.length > 0) mapData(data);
     });
+
+    const channel = supabase.channel('stats-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'project_features' }, () => {
+        supabase.from('project_features').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
+          if (data && data.length > 0) mapData(data);
+          else setStats(defaultStats);
+        });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   return (

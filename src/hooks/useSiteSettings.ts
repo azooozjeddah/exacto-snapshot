@@ -10,12 +10,21 @@ export function useSiteSettings() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from('site_settings').select('*').then(({ data }) => {
-      const map: SettingsMap = {};
-      data?.forEach((r) => { map[r.setting_key] = { value_ar: r.value_ar || '', value_en: r.value_en || '' }; });
-      setSettings(map);
-      setLoading(false);
-    });
+    const fetchSettings = () => {
+      supabase.from('site_settings').select('*').then(({ data }) => {
+        const map: SettingsMap = {};
+        data?.forEach((r) => { map[r.setting_key] = { value_ar: r.value_ar || '', value_en: r.value_en || '' }; });
+        setSettings(map);
+        setLoading(false);
+      });
+    };
+    fetchSettings();
+
+    const channel = supabase.channel('settings-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, fetchSettings)
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const get = (key: string, lang: 'ar' | 'en' = 'ar') =>

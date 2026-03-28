@@ -25,11 +25,19 @@ const GallerySection = () => {
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   useEffect(() => {
-    supabase.from('gallery_photos').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
-      if (data && data.length > 0) {
-        setImages(data.map((p) => ({ url: p.url, alt: p.alt_text_ar || 'The View Avenue' })));
-      }
-    });
+    const fetchPhotos = () => {
+      supabase.from('gallery_photos').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
+        if (data && data.length > 0) setImages(data.map((p) => ({ url: p.url, alt: p.alt_text_ar || 'The View Avenue' })));
+        else setImages(defaultImages);
+      });
+    };
+    fetchPhotos();
+
+    const channel = supabase.channel('gallery-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_photos' }, fetchPhotos)
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const closeLightbox = () => setLightbox(null);

@@ -15,19 +15,24 @@ const PartnersSection = () => {
   const [fromDb, setFromDb] = useState(false);
 
   useEffect(() => {
-    supabase.from('tenants').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
-      if (data && data.length > 0) {
-        setTenants(data.map((t) => ({
-          nameAr: t.name_ar,
-          name: t.name_en || '',
-          description: t.description_ar || '',
-          image: t.logo_url || '',
-          isLogo: !!t.logo_url,
-          type: t.type,
-        })) as any);
-        setFromDb(true);
-      }
-    });
+    const fetchTenants = () => {
+      supabase.from('tenants').select('*').eq('is_active', true).order('sort_order').then(({ data }) => {
+        if (data && data.length > 0) {
+          setTenants(data.map((t) => ({
+            nameAr: t.name_ar, name: t.name_en || '', description: t.description_ar || '',
+            image: t.logo_url || '', isLogo: !!t.logo_url, type: t.type,
+          })) as any);
+          setFromDb(true);
+        } else { setTenants(defaultTenants); setFromDb(false); }
+      });
+    };
+    fetchTenants();
+
+    const channel = supabase.channel('tenants-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tenants' }, fetchTenants)
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   return (
