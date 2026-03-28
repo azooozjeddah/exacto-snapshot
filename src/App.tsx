@@ -15,19 +15,24 @@ import AdminFeatures from "./pages/admin/AdminFeatures.tsx";
 import AdminSeo from "./pages/admin/AdminSeo.tsx";
 import AdminUsers from "./pages/admin/AdminUsers.tsx";
 import AdminProfile from "./pages/admin/AdminProfile.tsx";
+import AdminMessages from "./pages/admin/AdminMessages.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
+
+// Accounting layout & pages
+import AccountingLayout from "./layouts/AccountingLayout.tsx";
 import AccountingDashboard from "./pages/admin/accounting/AccountingDashboard.tsx";
 import AccountsList from "./pages/admin/accounting/AccountsList.tsx";
 import InvoicesList from "./pages/admin/accounting/InvoicesList.tsx";
 import PurchasesList from "./pages/admin/accounting/PurchasesList.tsx";
 import SuppliersList from "./pages/admin/accounting/SuppliersList.tsx";
 import PartnersList from "./pages/admin/accounting/PartnersList.tsx";
+
+// Accountant layout & pages
+import AccountantLayout from "./layouts/AccountantLayout.tsx";
+import AccountantDashboard from "./pages/accountant/AccountantDashboard.tsx";
 import ReportsPage from "./pages/admin/accounting/ReportsPage.tsx";
 import AttachmentsPage from "./pages/admin/accounting/AttachmentsPage.tsx";
 import AuditTrailPage from "./pages/admin/accounting/AuditTrailPage.tsx";
-import AdminMessages from "./pages/admin/AdminMessages.tsx";
-import AccountingRedirect from "./pages/AccountingRedirect.tsx";
-import AccountantRedirect from "./pages/AccountantRedirect.tsx";
 
 const queryClient = new QueryClient();
 
@@ -40,10 +45,12 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+
+          {/* ═══ Admin Panel ═══ */}
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['admin']}>
                 <AdminLayout />
               </ProtectedRoute>
             }
@@ -57,18 +64,40 @@ const App = () => (
             <Route path="users" element={<AdminUsers />} />
             <Route path="profile" element={<AdminProfile />} />
             <Route path="messages" element={<AdminMessages />} />
-            <Route path="accounting" element={<AccountingDashboard />} />
-            <Route path="accounting/accounts" element={<AccountsList />} />
-            <Route path="accounting/invoices" element={<InvoicesList />} />
-            <Route path="accounting/purchases" element={<PurchasesList />} />
-            <Route path="accounting/suppliers" element={<SuppliersList />} />
-            <Route path="accounting/partners" element={<PartnersList />} />
-            <Route path="accounting/reports" element={<ReportsPage />} />
-            <Route path="accounting/attachments" element={<AttachmentsPage />} />
-            <Route path="accounting/audit" element={<AuditTrailPage />} />
           </Route>
-          <Route path="/accounting" element={<AccountingRedirect />} />
-          <Route path="/accountant" element={<AccountantRedirect />} />
+
+          {/* ═══ Accounting System (General) ═══ */}
+          <Route
+            path="/accounting"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'accountant', 'data_entry']}>
+                <AccountingLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AccountingDashboard />} />
+            <Route path="accounts" element={<AccountsList />} />
+            <Route path="invoices" element={<InvoicesList />} />
+            <Route path="purchases" element={<PurchasesList />} />
+            <Route path="suppliers" element={<SuppliersList />} />
+            <Route path="partners" element={<PartnersList />} />
+          </Route>
+
+          {/* ═══ Accountant Panel ═══ */}
+          <Route
+            path="/accountant"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'accountant']}>
+                <AccountantLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AccountantDashboard />} />
+            <Route path="reports" element={<ReportsPage />} />
+            <Route path="attachments" element={<AttachmentsPage />} />
+            <Route path="audit" element={<AuditTrailPage />} />
+          </Route>
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
