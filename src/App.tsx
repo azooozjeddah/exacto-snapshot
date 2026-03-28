@@ -37,7 +37,7 @@ const App = () => (
             <Route path="settings" element={<AdminSettings />} />
             <Route path="photos" element={<AdminPhotos />} />
             <Route path="tenants" element={<AdminTenants />} />
-            <Route path="features" element={<div className="text-gray-500">صفحة ميزات المشروع - قريباً</div>} />
+            <Route path="features" element={<AdminFeatures />} />
             <Route path="seo" element={<div className="text-gray-500">صفحة تحسين SEO - قريباً</div>} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
