@@ -26,16 +26,25 @@ const ExperienceSection = () => {
   const [experiences, setExperiences] = useState(defaultExperiences);
 
   useEffect(() => {
-    supabase.from('gallery_photos').select('*').like('category', 'experience_%').eq('is_active', true).order('sort_order')
-      .then(({ data }) => {
-        if (data && data.length > 0) {
-          setExperiences(data.map((p, i) => ({
-            image: p.url,
-            title: p.alt_text_ar || defaultExperiences[i]?.title || `تجربة ${i + 1}`,
-            description: p.alt_text_en || defaultExperiences[i]?.description || '',
-          })));
-        }
-      });
+    const fetchExp = () => {
+      supabase.from('gallery_photos').select('*').like('category', 'experience_%').eq('is_active', true).order('sort_order')
+        .then(({ data }) => {
+          if (data && data.length > 0) {
+            setExperiences(data.map((p, i) => ({
+              image: p.url,
+              title: p.alt_text_ar || defaultExperiences[i]?.title || `تجربة ${i + 1}`,
+              description: p.alt_text_en || defaultExperiences[i]?.description || '',
+            })));
+          } else setExperiences(defaultExperiences);
+        });
+    };
+    fetchExp();
+
+    const channel = supabase.channel('experience-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_photos' }, fetchExp)
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   return (
