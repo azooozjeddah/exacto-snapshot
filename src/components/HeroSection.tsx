@@ -20,8 +20,17 @@ const HeroSection = () => {
   const { get } = useSiteSettings();
 
   useEffect(() => {
-    supabase.from('gallery_photos').select('url').eq('category', 'hero_main').eq('is_active', true).limit(1)
-      .then(({ data }) => { if (data?.[0]?.url) setHeroBg(data[0].url); });
+    const fetchHero = () => {
+      supabase.from('gallery_photos').select('url').eq('category', 'hero_main').eq('is_active', true).limit(1)
+        .then(({ data }) => { if (data?.[0]?.url) setHeroBg(data[0].url); else setHeroBg(heroBgFallback); });
+    };
+    fetchHero();
+
+    const channel = supabase.channel('hero-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_photos' }, fetchHero)
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const subtitleAr = get('hero_subtitle', 'ar') || 'وجهة تجارية فاخرة تتطلع إليها الأنظار في قلب مدينة جدة، تجمع بين التصميم العصري والفخامة الاستثنائية لتقدم تجربة تسوق وعمل وترفيه لا مثيل لها';
