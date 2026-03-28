@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Menu, X, LogOut, ExternalLink, BookOpen, FileText, ShoppingCart, Truck, Handshake, Calculator } from 'lucide-react';
+import { Menu, X, LogOut, ExternalLink, BookOpen, FileText, ShoppingCart, Truck, Handshake, Calculator, BarChart3, Paperclip, Shield, BookOpenCheck } from 'lucide-react';
 
 const navItems = [
-  { label: 'النظام المحاسبي', labelEn: 'Dashboard', icon: Calculator, to: '/accounting', end: true },
+  { label: 'لوحة التحكم', labelEn: 'Dashboard', icon: Calculator, to: '/accounting', end: true },
   { label: 'دليل الحسابات', labelEn: 'Accounts', icon: BookOpen, to: '/accounting/accounts' },
   { label: 'الفواتير', labelEn: 'Invoices', icon: FileText, to: '/accounting/invoices' },
   { label: 'المشتريات', labelEn: 'Purchases', icon: ShoppingCart, to: '/accounting/purchases' },
   { label: 'الموردون', labelEn: 'Suppliers', icon: Truck, to: '/accounting/suppliers' },
   { label: 'الشركاء', labelEn: 'Partners', icon: Handshake, to: '/accounting/partners' },
+  { label: 'التقارير المالية', labelEn: 'Reports', icon: BarChart3, to: '/accounting/reports' },
+  { label: 'المستندات', labelEn: 'Attachments', icon: Paperclip, to: '/accounting/attachments' },
+  { label: 'سجل التدقيق', labelEn: 'Audit Trail', icon: Shield, to: '/accounting/audit' },
 ];
 
 export default function AccountingLayout() {
@@ -24,7 +27,6 @@ export default function AccountingLayout() {
 
   return (
     <div dir="rtl" className="min-h-screen flex bg-[#F8F9FA]" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-      {/* Sidebar */}
       {!collapsed && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" onClick={() => setCollapsed(true)} />}
       <aside className={`fixed lg:static top-0 right-0 z-40 h-screen lg:h-auto w-[260px] min-h-screen bg-white border-l border-gray-200 flex flex-col shrink-0 transition-transform duration-300 ${collapsed ? 'translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden lg:border-0' : 'translate-x-0'}`}>
         <div className="p-6 border-b border-gray-100 flex items-center justify-between">
@@ -55,7 +57,6 @@ export default function AccountingLayout() {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="flex-1 flex flex-col min-w-0">
         <header className="h-14 bg-white border-b border-gray-200 flex items-center px-4 lg:px-6 shrink-0">
           <button onClick={() => setCollapsed(!collapsed)} className="text-gray-500 hover:text-gray-700 ml-3"><Menu className="h-5 w-5" /></button>
