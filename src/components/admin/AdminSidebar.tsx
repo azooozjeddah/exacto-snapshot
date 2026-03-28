@@ -1,16 +1,17 @@
-import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { LayoutDashboard, Settings, ImageIcon, Store, Star, Search, LogOut, ExternalLink, User, Menu, X } from 'lucide-react';
+import { useUserRole } from '@/hooks/useUserRole';
+import { LayoutDashboard, Settings, ImageIcon, Store, Star, Search, LogOut, ExternalLink, User, Users, X } from 'lucide-react';
 
 const navItems = [
-  { label: 'لوحة التحكم', icon: LayoutDashboard, to: '/admin', end: true },
-  { label: 'الإعدادات العامة', icon: Settings, to: '/admin/settings' },
-  { label: 'معرض الصور', icon: ImageIcon, to: '/admin/photos' },
-  { label: 'المستأجرون', icon: Store, to: '/admin/tenants' },
-  { label: 'ميزات المشروع', icon: Star, to: '/admin/features' },
-  { label: 'تحسين SEO', icon: Search, to: '/admin/seo' },
-  { label: 'الملف الشخصي', icon: User, to: '/admin/profile' },
+  { label: 'لوحة التحكم', icon: LayoutDashboard, to: '/admin', end: true, page: 'dashboard' },
+  { label: 'الإعدادات العامة', icon: Settings, to: '/admin/settings', page: 'settings' },
+  { label: 'معرض الصور', icon: ImageIcon, to: '/admin/photos', page: 'photos' },
+  { label: 'المستأجرون', icon: Store, to: '/admin/tenants', page: 'tenants' },
+  { label: 'ميزات المشروع', icon: Star, to: '/admin/features', page: 'features' },
+  { label: 'تحسين SEO', icon: Search, to: '/admin/seo', page: 'seo' },
+  { label: 'إدارة المستخدمين', icon: Users, to: '/admin/users', page: 'users' },
+  { label: 'الملف الشخصي', icon: User, to: '/admin/profile', page: 'profile' },
 ];
 
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
 
 export default function AdminSidebar({ collapsed, onToggle }: Props) {
   const { user, signOut } = useAuth();
+  const { canAccess } = useUserRole();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -27,9 +29,10 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
     navigate('/admin/login');
   };
 
+  const visibleItems = navItems.filter((item) => canAccess(item.page));
+
   return (
     <>
-      {/* Mobile overlay */}
       {!collapsed && (
         <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" onClick={onToggle} />
       )}
@@ -40,7 +43,6 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
         transition-transform duration-300
         ${collapsed ? 'translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden lg:border-0' : 'translate-x-0'}
       `}>
-        {/* Logo */}
         <div className="p-6 border-b border-gray-100 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>The View Avenue</h1>
@@ -51,9 +53,8 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => (
+          {visibleItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -70,7 +71,6 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
             </NavLink>
           ))}
 
-          {/* External site link */}
           <a
             href="/"
             target="_blank"
@@ -82,7 +82,6 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
           </a>
         </nav>
 
-        {/* User & Logout */}
         <div className="p-4 border-t border-gray-100">
           <p className="text-xs text-gray-400 mb-2 truncate" dir="ltr">{user?.email}</p>
           <button onClick={handleSignOut} className="flex items-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-50 transition-colors">

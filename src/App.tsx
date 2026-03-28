@@ -13,6 +13,7 @@ import AdminPhotos from "./pages/admin/AdminPhotos.tsx";
 import AdminTenants from "./pages/admin/AdminTenants.tsx";
 import AdminFeatures from "./pages/admin/AdminFeatures.tsx";
 import AdminSeo from "./pages/admin/AdminSeo.tsx";
+import AdminUsers from "./pages/admin/AdminUsers.tsx";
 import AdminProfile from "./pages/admin/AdminProfile.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
 
