@@ -26,10 +26,6 @@ import InvoicesList from "./pages/admin/accounting/InvoicesList.tsx";
 import PurchasesList from "./pages/admin/accounting/PurchasesList.tsx";
 import SuppliersList from "./pages/admin/accounting/SuppliersList.tsx";
 import PartnersList from "./pages/admin/accounting/PartnersList.tsx";
-
-// Accountant layout & pages
-import AccountantLayout from "./layouts/AccountantLayout.tsx";
-import AccountantDashboard from "./pages/accountant/AccountantDashboard.tsx";
 import ReportsPage from "./pages/admin/accounting/ReportsPage.tsx";
 import AttachmentsPage from "./pages/admin/accounting/AttachmentsPage.tsx";
 import AuditTrailPage from "./pages/admin/accounting/AuditTrailPage.tsx";
@@ -66,7 +62,7 @@ const App = () => (
             <Route path="messages" element={<AdminMessages />} />
           </Route>
 
-          {/* ═══ Accounting System (General) ═══ */}
+          {/* ═══ Accounting System (Unified) ═══ */}
           <Route
             path="/accounting"
             element={
@@ -81,18 +77,6 @@ const App = () => (
             <Route path="purchases" element={<PurchasesList />} />
             <Route path="suppliers" element={<SuppliersList />} />
             <Route path="partners" element={<PartnersList />} />
-          </Route>
-
-          {/* ═══ Accountant Panel ═══ */}
-          <Route
-            path="/accountant"
-            element={
-              <ProtectedRoute allowedRoles={['admin', 'accountant']}>
-                <AccountantLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<AccountantDashboard />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="attachments" element={<AttachmentsPage />} />
             <Route path="audit" element={<AuditTrailPage />} />
