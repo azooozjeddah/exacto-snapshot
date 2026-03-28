@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 
-export type AppRole = 'admin' | 'photo_manager' | 'tenant_manager' | 'features_manager' | 'settings_manager';
+export type AppRole = 'admin' | 'photo_manager' | 'tenant_manager' | 'features_manager' | 'settings_manager' | 'accountant' | 'data_entry';
 
 const rolePageMap: Record<AppRole, string[]> = {
-  admin: ['dashboard', 'photos', 'tenants', 'features', 'settings', 'seo', 'users', 'profile'],
+  admin: ['dashboard', 'photos', 'tenants', 'features', 'settings', 'seo', 'users', 'profile',
+    'accounting', 'accounts', 'invoices', 'purchases', 'suppliers', 'partners'],
   photo_manager: ['dashboard', 'photos', 'profile'],
   tenant_manager: ['dashboard', 'tenants', 'profile'],
   features_manager: ['dashboard', 'features', 'profile'],
   settings_manager: ['dashboard', 'settings', 'seo', 'profile'],
+  accountant: ['dashboard', 'profile', 'accounting', 'accounts', 'invoices', 'purchases', 'suppliers', 'partners'],
+  data_entry: ['dashboard', 'profile', 'accounting', 'accounts', 'invoices', 'purchases'],
 };
 
 export function useUserRole() {

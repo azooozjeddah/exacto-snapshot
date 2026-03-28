@@ -16,6 +16,12 @@ import AdminSeo from "./pages/admin/AdminSeo.tsx";
 import AdminUsers from "./pages/admin/AdminUsers.tsx";
 import AdminProfile from "./pages/admin/AdminProfile.tsx";
 import ProtectedRoute from "./components/admin/ProtectedRoute.tsx";
+import AccountingDashboard from "./pages/admin/accounting/AccountingDashboard.tsx";
+import AccountsList from "./pages/admin/accounting/AccountsList.tsx";
+import InvoicesList from "./pages/admin/accounting/InvoicesList.tsx";
+import PurchasesList from "./pages/admin/accounting/PurchasesList.tsx";
+import SuppliersList from "./pages/admin/accounting/SuppliersList.tsx";
+import PartnersList from "./pages/admin/accounting/PartnersList.tsx";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +50,12 @@ const App = () => (
             <Route path="seo" element={<AdminSeo />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="profile" element={<AdminProfile />} />
+            <Route path="accounting" element={<AccountingDashboard />} />
+            <Route path="accounting/accounts" element={<AccountsList />} />
+            <Route path="accounting/invoices" element={<InvoicesList />} />
+            <Route path="accounting/purchases" element={<PurchasesList />} />
+            <Route path="accounting/suppliers" element={<SuppliersList />} />
+            <Route path="accounting/partners" element={<PartnersList />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

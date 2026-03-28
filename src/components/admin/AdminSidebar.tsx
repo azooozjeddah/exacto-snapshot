@@ -1,7 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
-import { LayoutDashboard, Settings, ImageIcon, Store, Star, Search, LogOut, ExternalLink, User, Users, X } from 'lucide-react';
+import {
+  LayoutDashboard, Settings, ImageIcon, Store, Star, Search, LogOut, ExternalLink,
+  User, Users, X, Calculator, BookOpen, FileText, ShoppingCart, Truck, Handshake,
+} from 'lucide-react';
 
 const navItems = [
   { label: 'لوحة التحكم', icon: LayoutDashboard, to: '/admin', end: true, page: 'dashboard' },
@@ -12,6 +15,15 @@ const navItems = [
   { label: 'تحسين SEO', icon: Search, to: '/admin/seo', page: 'seo' },
   { label: 'إدارة المستخدمين', icon: Users, to: '/admin/users', page: 'users' },
   { label: 'الملف الشخصي', icon: User, to: '/admin/profile', page: 'profile' },
+];
+
+const accountingItems = [
+  { label: 'النظام المحاسبي', icon: Calculator, to: '/admin/accounting', end: true, page: 'accounting' },
+  { label: 'دليل الحسابات', icon: BookOpen, to: '/admin/accounting/accounts', page: 'accounts' },
+  { label: 'الفواتير', icon: FileText, to: '/admin/accounting/invoices', page: 'invoices' },
+  { label: 'المشتريات', icon: ShoppingCart, to: '/admin/accounting/purchases', page: 'purchases' },
+  { label: 'الموردون', icon: Truck, to: '/admin/accounting/suppliers', page: 'suppliers' },
+  { label: 'الشركاء', icon: Handshake, to: '/admin/accounting/partners', page: 'partners' },
 ];
 
 interface Props {
@@ -30,6 +42,24 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
   };
 
   const visibleItems = navItems.filter((item) => canAccess(item.page));
+  const visibleAccounting = accountingItems.filter((item) => canAccess(item.page));
+
+  const renderNavItem = (item: typeof navItems[0]) => (
+    <NavLink
+      key={item.to}
+      to={item.to}
+      end={item.end}
+      onClick={() => { if (window.innerWidth < 1024) onToggle(); }}
+      className={({ isActive }) =>
+        `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+          isActive ? 'bg-[#D4AF37]/10 text-[#D4AF37]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+        }`
+      }
+    >
+      <item.icon className="h-5 w-5" />
+      <span>{item.label}</span>
+    </NavLink>
+  );
 
   return (
     <>
@@ -54,22 +84,16 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {visibleItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              onClick={() => { if (window.innerWidth < 1024) onToggle(); }}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                  isActive ? 'bg-[#D4AF37]/10 text-[#D4AF37]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`
-              }
-            >
-              <item.icon className="h-5 w-5" />
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+          {visibleItems.map(renderNavItem)}
+
+          {visibleAccounting.length > 0 && (
+            <>
+              <div className="pt-4 pb-2 px-4">
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">المحاسبة</p>
+              </div>
+              {visibleAccounting.map(renderNavItem)}
+            </>
+          )}
 
           <a
             href="/"
