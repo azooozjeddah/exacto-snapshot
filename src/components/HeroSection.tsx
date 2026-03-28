@@ -12,6 +12,8 @@ const navLinks = [
   { href: "#gallery", label: "معرض الصور" },
   { href: "#experience", label: "التجربة" },
   { href: "#location", label: "الموقع" },
+  { href: "#contact", label: "تواصل معنا" },
+  { href: "/admin/accounting", label: "النظام المحاسبي", external: true },
 ];
 
 const HeroSection = () => {
