@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Plus, Eye, Trash2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
+import TableToolbar, { exportToCSV } from '@/components/admin/accounting/TableToolbar';
 
 interface Invoice {
-  id: number;
-  invoice_number: string;
-  invoice_date: string;
-  client_name: string;
-  total: number;
-  status: string;
+  id: number; invoice_number: string; invoice_date: string; client_name: string; total: number; status: string;
 }
 
 const statusMap: Record<string, { ar: string; color: string }> = {
@@ -27,49 +25,62 @@ const statusMap: Record<string, { ar: string; color: string }> = {
 };
 
 export default function InvoicesList() {
+  const { user } = useAuth();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState({ invoice_number: '', client_name: '', client_phone: '', total: '', status: 'draft' });
+  const [search, setSearch] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
 
   const fetchInvoices = async () => {
     setLoading(true);
-    const { data } = await supabase.from('invoices').select('*').order('created_at', { ascending: false });
+    let q = supabase.from('invoices').select('*').order('created_at', { ascending: false });
+    if (filterStatus !== 'all') q = q.eq('status', filterStatus);
+    const { data } = await q;
     setInvoices((data as Invoice[]) || []);
     setLoading(false);
   };
 
-  useEffect(() => { fetchInvoices(); }, []);
+  useEffect(() => { fetchInvoices(); }, [filterStatus]);
+
+  const filtered = invoices.filter(i =>
+    !search || i.invoice_number.includes(search) || i.client_name.includes(search)
+  );
 
   const handleSave = async () => {
     if (!form.invoice_number || !form.client_name) { toast.error('يرجى ملء الحقول المطلوبة'); return; }
     const total = parseFloat(form.total) || 0;
     const { error } = await supabase.from('invoices').insert({
-      invoice_number: form.invoice_number,
-      client_name: form.client_name,
-      client_phone: form.client_phone || null,
-      total,
-      subtotal: total,
-      tax_amount: 0,
-      status: form.status as any,
+      invoice_number: form.invoice_number, client_name: form.client_name,
+      client_phone: form.client_phone || null, total, subtotal: total, tax_amount: 0, status: form.status as any,
     });
     if (error) { toast.error(error.message); return; }
-    toast.success('تم إنشاء الفاتورة');
+    await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: 'create', entity_type: 'invoice', details: { invoice_number: form.invoice_number } });
+    toast.success('تم إنشاء الفاتورة بنجاح');
     setDialogOpen(false);
     setForm({ invoice_number: '', client_name: '', client_phone: '', total: '', status: 'draft' });
     fetchInvoices();
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('هل أنت متأكد من الحذف؟')) return;
-    await supabase.from('invoices').delete().eq('id', id);
+  const handleDelete = async (inv: Invoice) => {
+    await supabase.from('invoices').delete().eq('id', inv.id);
+    await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: 'delete', entity_type: 'invoice', entity_id: inv.id, details: { invoice_number: inv.invoice_number } });
     toast.success('تم حذف الفاتورة');
     fetchInvoices();
   };
 
+  const handleExport = () => {
+    exportToCSV(
+      ['رقم الفاتورة', 'التاريخ', 'العميل', 'المبلغ', 'الحالة'],
+      filtered.map(i => [i.invoice_number, i.invoice_date, i.client_name, Number(i.total), statusMap[i.status]?.ar || i.status]),
+      'invoices'
+    );
+  };
+
   return (
     <div dir="rtl">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">الفواتير</h2>
           <p className="text-gray-500 text-sm">Invoices</p>
@@ -89,9 +100,7 @@ export default function InvoicesList() {
                 <Label>الحالة</Label>
                 <Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(statusMap).map(([k, v]) => <SelectItem key={k} value={k}>{v.ar}</SelectItem>)}
-                  </SelectContent>
+                  <SelectContent>{Object.entries(statusMap).map(([k, v]) => <SelectItem key={k} value={k}>{v.ar}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <Button onClick={handleSave} className="w-full bg-[#D4AF37] hover:bg-[#b8962e] text-white">إنشاء</Button>
@@ -100,42 +109,55 @@ export default function InvoicesList() {
         </Dialog>
       </div>
 
+      <div className="flex gap-2 mb-3 flex-wrap">
+        {[{ v: 'all', l: 'الكل' }, ...Object.entries(statusMap).map(([k, v]) => ({ v: k, l: v.ar }))].map(s => (
+          <Button key={s.v} variant={filterStatus === s.v ? 'default' : 'outline'} size="sm" onClick={() => setFilterStatus(s.v)}
+            className={filterStatus === s.v ? 'bg-[#D4AF37] hover:bg-[#b8962e] text-white' : ''}>{s.l}</Button>
+        ))}
+      </div>
+
+      <TableToolbar searchValue={search} onSearchChange={setSearch} searchPlaceholder="بحث برقم الفاتورة أو اسم العميل..."
+        onExportCSV={handleExport} helpText="أنشئ وأدر فواتيرك هنا. يمكنك التصفية حسب الحالة والبحث." helpTextEn="Create and manage invoices. Filter by status and search." />
+
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="text-right">رقم الفاتورة</TableHead>
-              <TableHead className="text-right">التاريخ</TableHead>
-              <TableHead className="text-right">العميل</TableHead>
-              <TableHead className="text-right">المبلغ</TableHead>
-              <TableHead className="text-right">الحالة</TableHead>
-              <TableHead className="text-right">إجراءات</TableHead>
+            <TableRow className="bg-gray-50/80">
+              <TableHead className="text-right font-bold">رقم الفاتورة</TableHead>
+              <TableHead className="text-right font-bold">التاريخ</TableHead>
+              <TableHead className="text-right font-bold">العميل</TableHead>
+              <TableHead className="text-right font-bold">المبلغ</TableHead>
+              <TableHead className="text-right font-bold">الحالة</TableHead>
+              <TableHead className="text-right font-bold">إجراءات</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={6} className="text-center py-8 text-gray-400">جاري التحميل...</TableCell></TableRow>
-            ) : invoices.length === 0 ? (
+              <TableRow><TableCell colSpan={6} className="text-center py-8"><div className="w-6 h-6 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto" /></TableCell></TableRow>
+            ) : filtered.length === 0 ? (
               <TableRow><TableCell colSpan={6} className="text-center py-8 text-gray-400">لا توجد فواتير</TableCell></TableRow>
-            ) : invoices.map(inv => (
-              <TableRow key={inv.id}>
-                <TableCell className="font-mono text-sm">{inv.invoice_number}</TableCell>
+            ) : filtered.map(inv => (
+              <TableRow key={inv.id} className="hover:bg-gray-50/50 transition-colors">
+                <TableCell className="font-mono text-sm font-medium">{inv.invoice_number}</TableCell>
                 <TableCell>{inv.invoice_date}</TableCell>
                 <TableCell className="font-medium">{inv.client_name}</TableCell>
-                <TableCell className="font-medium">{Number(inv.total).toLocaleString()} ر.س</TableCell>
+                <TableCell className="font-bold">{Number(inv.total).toLocaleString()} ر.س</TableCell>
+                <TableCell><span className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusMap[inv.status]?.color || ''}`}>{statusMap[inv.status]?.ar || inv.status}</span></TableCell>
                 <TableCell>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusMap[inv.status]?.color || ''}`}>
-                    {statusMap[inv.status]?.ar || inv.status}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(inv.id)} className="text-red-500"><Trash2 className="h-4 w-4" /></Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild><Button variant="ghost" size="icon" className="text-red-500"><Trash2 className="h-4 w-4" /></Button></AlertDialogTrigger>
+                    <AlertDialogContent dir="rtl">
+                      <AlertDialogHeader><AlertDialogTitle>تأكيد الحذف</AlertDialogTitle><AlertDialogDescription>هل أنت متأكد من حذف الفاتورة "{inv.invoice_number}"؟</AlertDialogDescription></AlertDialogHeader>
+                      <AlertDialogFooter className="flex-row-reverse gap-2"><AlertDialogCancel>إلغاء</AlertDialogCancel><AlertDialogAction onClick={() => handleDelete(inv)} className="bg-red-500 hover:bg-red-600">حذف</AlertDialogAction></AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+      <p className="text-xs text-gray-400 mt-2 text-center">عدد الفواتير: {filtered.length} | الإجمالي: {filtered.reduce((s, i) => s + Number(i.total), 0).toLocaleString()} ر.س</p>
     </div>
   );
 }
