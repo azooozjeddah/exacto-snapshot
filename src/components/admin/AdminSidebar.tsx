@@ -4,6 +4,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import {
   LayoutDashboard, Settings, ImageIcon, Store, Star, Search, LogOut, ExternalLink,
   User, Users, X, Calculator, BookOpen, FileText, ShoppingCart, Truck, Handshake,
+  BarChart3, Paperclip, Shield,
 } from 'lucide-react';
 
 const navItems = [
@@ -24,6 +25,9 @@ const accountingItems = [
   { label: 'المشتريات', icon: ShoppingCart, to: '/admin/accounting/purchases', page: 'purchases' },
   { label: 'الموردون', icon: Truck, to: '/admin/accounting/suppliers', page: 'suppliers' },
   { label: 'الشركاء', icon: Handshake, to: '/admin/accounting/partners', page: 'partners' },
+  { label: 'التقارير المالية', icon: BarChart3, to: '/admin/accounting/reports', page: 'reports' },
+  { label: 'المستندات', icon: Paperclip, to: '/admin/accounting/attachments', page: 'attachments' },
+  { label: 'سجل التدقيق', icon: Shield, to: '/admin/accounting/audit', page: 'audit' },
 ];
 
 interface Props {
