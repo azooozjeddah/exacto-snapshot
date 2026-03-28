@@ -22,7 +22,7 @@ export default function AccountingLayout() {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/admin/login');
+    navigate('/accounting/login');
   };
 
   return (

@@ -20,7 +20,7 @@ export default function AdminLogin() {
   useEffect(() => {
     if (user && role && !roleLoading) {
       if (role === 'admin') navigate('/admin', { replace: true });
-      else navigate('/accounting', { replace: true });
+      else navigate('/admin/login', { replace: true }); // Non-admin can't use admin login
     }
   }, [user, role, roleLoading, navigate]);
 

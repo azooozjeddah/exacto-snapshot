@@ -21,7 +21,9 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
   }
 
   if (!user) {
-    return <Navigate to="/admin/login" replace />;
+    // Redirect to appropriate login based on route
+    const isAccounting = window.location.pathname.startsWith('/accounting');
+    return <Navigate to={isAccounting ? '/accounting/login' : '/admin/login'} replace />;
   }
 
   // If specific roles are required, check them
