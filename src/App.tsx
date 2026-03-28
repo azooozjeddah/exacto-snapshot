@@ -39,7 +39,7 @@ const App = () => (
             <Route path="photos" element={<AdminPhotos />} />
             <Route path="tenants" element={<AdminTenants />} />
             <Route path="features" element={<AdminFeatures />} />
-            <Route path="seo" element={<div className="text-gray-500">صفحة تحسين SEO - قريباً</div>} />
+            <Route path="seo" element={<AdminSeo />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
