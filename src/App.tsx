@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AdminLogin from "./pages/admin/AdminLogin.tsx";
+import AccountingLogin from "./pages/accounting/AccountingLogin.tsx";
 import AdminLayout from "./layouts/AdminLayout.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminSettings from "./pages/admin/AdminSettings.tsx";
@@ -41,6 +42,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/accounting/login" element={<AccountingLogin />} />
 
           {/* ═══ Admin Panel ═══ */}
           <Route
