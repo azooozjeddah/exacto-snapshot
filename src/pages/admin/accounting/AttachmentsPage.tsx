@@ -30,11 +30,8 @@ interface Attachment {
 }
 
 const relatedTypes = [
-  { value: 'invoice', labelAr: 'فاتورة', labelEn: 'Invoice' },
-  { value: 'purchase', labelAr: 'مشترى', labelEn: 'Purchase' },
   { value: 'journal_entry', labelAr: 'قيد محاسبي', labelEn: 'Journal Entry' },
   { value: 'partner', labelAr: 'شريك', labelEn: 'Partner' },
-  { value: 'supplier', labelAr: 'مورد', labelEn: 'Supplier' },
   { value: 'other', labelAr: 'أخرى', labelEn: 'Other' },
 ];
 

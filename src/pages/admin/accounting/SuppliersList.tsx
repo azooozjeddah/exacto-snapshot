@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
+import AttachmentsSection from '@/components/admin/accounting/AttachmentsSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -63,6 +64,13 @@ export default function SuppliersList() {
     setDialogOpen(false); fetch();
   };
 
+  const handleToggleActive = async (s: Supplier) => {
+    await supabase.from('suppliers').update({ is_active: !s.is_active }).eq('id', s.id);
+    await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: s.is_active ? 'deactivate' : 'activate', entity_type: 'supplier', entity_id: s.id, details: { name_ar: s.name_ar } });
+    toast.success(s.is_active ? 'تم إيقاف المورد' : 'تم تفعيل المورد');
+    fetch();
+  };
+
   const handleDelete = async (s: Supplier) => {
     await supabase.from('suppliers').delete().eq('id', s.id);
     await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: 'delete', entity_type: 'supplier', entity_id: s.id, details: { name_ar: s.name_ar } });
@@ -89,19 +97,27 @@ export default function SuppliersList() {
               <div><Label>البريد</Label><Input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} dir="ltr" /></div>
               <div><Label>الرقم الضريبي</Label><Input value={form.tax_number} onChange={e => setForm({ ...form, tax_number: e.target.value })} dir="ltr" /></div>
               <Button onClick={handleSave} className="w-full bg-[#D4AF37] hover:bg-[#b8962e] text-white">{editing ? 'تحديث' : 'إضافة'}</Button>
+
+              {/* قسم المرفقات - يظهر دائماً */}
+              <AttachmentsSection
+                relatedType="supplier"
+                relatedId={editing ? editing.id : null}
+                label="مستندات المورد (عقود ، تراخيص ، غيرها)"
+              />
             </div>
           </DialogContent>
         </Dialog>
       </div>
 
       <TableToolbar searchValue={search} onSearchChange={setSearch} searchPlaceholder="بحث بالاسم أو الهاتف..."
-        onExportCSV={handleExport} helpText="أضف وأدر الموردين هنا." helpTextEn="Add and manage your suppliers." />
+        onExportCSV={handleExport} helpText="أضف وأدر الموردين هنا. تقدر تفعّل أو توقف أي مورد بضغطة زر." helpTextEn="Add and manage suppliers. Toggle active/inactive status." />
 
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         <Table>
           <TableHeader><TableRow className="bg-gray-50/80">
             <TableHead className="text-right font-bold">الاسم</TableHead><TableHead className="text-right font-bold">الهاتف</TableHead>
             <TableHead className="text-right font-bold">البريد</TableHead><TableHead className="text-right font-bold">الرقم الضريبي</TableHead>
+            <TableHead className="text-right font-bold">الحالة</TableHead>
             <TableHead className="text-right font-bold">إجراءات</TableHead>
           </TableRow></TableHeader>
           <TableBody>
@@ -116,8 +132,18 @@ export default function SuppliersList() {
                 <TableCell dir="ltr">{s.email || '—'}</TableCell>
                 <TableCell dir="ltr">{s.tax_number || '—'}</TableCell>
                 <TableCell>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${s.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>
+                    {s.is_active ? 'نشط' : 'موقوف'}
+                  </span>
+                </TableCell>
+                <TableCell>
                   <div className="flex gap-1">
                     <Tooltip><TooltipTrigger asChild><Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>تعديل</TooltipContent></Tooltip>
+                    <Tooltip><TooltipTrigger asChild>
+                      <Button variant="ghost" size="icon" onClick={() => handleToggleActive(s)} className={s.is_active ? 'text-orange-500' : 'text-emerald-500'}>
+                        {s.is_active ? <ToggleRight className="h-5 w-5" /> : <ToggleLeft className="h-5 w-5" />}
+                      </Button>
+                    </TooltipTrigger><TooltipContent>{s.is_active ? 'إيقاف المورد' : 'تفعيل المورد'}</TooltipContent></Tooltip>
                     <AlertDialog>
                       <AlertDialogTrigger asChild><Button variant="ghost" size="icon" className="text-red-500"><Trash2 className="h-4 w-4" /></Button></AlertDialogTrigger>
                       <AlertDialogContent dir="rtl"><AlertDialogHeader><AlertDialogTitle>تأكيد الحذف</AlertDialogTitle><AlertDialogDescription>هل أنت متأكد من حذف المورد "{s.name_ar}"؟</AlertDialogDescription></AlertDialogHeader>
@@ -130,7 +156,7 @@ export default function SuppliersList() {
           </TableBody>
         </Table>
       </div>
-      <p className="text-xs text-gray-400 mt-2 text-center">عدد الموردين: {filtered.length}</p>
+      <p className="text-xs text-gray-400 mt-2 text-center">عدد الموردين: {filtered.length} | نشط: {filtered.filter(s => s.is_active).length} | موقوف: {filtered.filter(s => !s.is_active).length}</p>
     </div>
   );
 }

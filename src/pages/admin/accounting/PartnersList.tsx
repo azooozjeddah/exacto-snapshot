@@ -50,9 +50,20 @@ export default function PartnersList() {
 
   const handleSave = async () => {
     if (!form.name_ar) { toast.error('يرجى إدخال اسم الشريك'); return; }
+    const newPct = parseFloat(form.profit_percentage) || 0;
+    if (newPct < 0 || newPct > 100) { toast.error('نسبة الأرباح يجب أن تكون بين 0 و 100'); return; }
+    // Check total won't exceed 100%
+    const otherTotal = partners
+      .filter(p => p.id !== editing?.id)
+      .reduce((s, p) => s + Number(p.profit_percentage), 0);
+    const newTotal = otherTotal + newPct;
+    if (newTotal > 100) {
+      toast.error(`مجموع النسب سيصبح ${newTotal}% وهو أكبر من 100%. المتبقي المتاح: ${(100 - otherTotal).toFixed(2)}%`);
+      return;
+    }
     const payload = {
       name_ar: form.name_ar, name_en: form.name_en || null, phone: form.phone || null,
-      email: form.email || null, profit_percentage: parseFloat(form.profit_percentage) || 0, notes: form.notes || null,
+      email: form.email || null, profit_percentage: newPct, notes: form.notes || null,
     };
     if (editing) {
       await supabase.from('partners').update(payload).eq('id', editing.id);
@@ -63,6 +74,8 @@ export default function PartnersList() {
       await supabase.from('audit_logs').insert({ user_id: user?.id, user_email: user?.email || '', action: 'create', entity_type: 'partner', details: payload });
       toast.success('تم الإضافة');
     }
+    if (newTotal === 100) toast.success('✅ مجموع النسب = 100% - ممتاز!');
+    else toast.info(`ℹ️ المجموع الحالي: ${newTotal}% | المتبقي: ${(100 - newTotal).toFixed(2)}%`);
     setDialogOpen(false); fetch();
   };
 

@@ -86,9 +86,9 @@ export default function AccountingDashboard() {
     { label: 'دليل الحسابات', icon: BookOpen, to: '/accounting/accounts', color: 'bg-blue-500' },
     { label: 'الفواتير', icon: FileText, to: '/accounting/invoices', color: 'bg-purple-500' },
     { label: 'المشتريات', icon: ShoppingCart, to: '/accounting/purchases', color: 'bg-orange-500' },
-    { label: 'التقارير', icon: BarChart3, to: '/accountant/reports', color: 'bg-emerald-500' },
-    { label: 'المستندات', icon: Paperclip, to: '/accountant/attachments', color: 'bg-pink-500' },
-    { label: 'سجل التدقيق', icon: Shield, to: '/accountant/audit', color: 'bg-gray-600' },
+    { label: 'التقارير', icon: BarChart3, to: '/accounting/reports', color: 'bg-emerald-500' },
+    { label: 'المستندات', icon: Paperclip, to: '/accounting/attachments', color: 'bg-pink-500' },
+    { label: 'سجل التدقيق', icon: Shield, to: '/accounting/audit', color: 'bg-gray-600' },
   ];
 
   if (loading) {

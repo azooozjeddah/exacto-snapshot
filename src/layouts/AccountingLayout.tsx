@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Menu, X, LogOut, ExternalLink, BookOpen, FileText, ShoppingCart, Truck, Handshake, Calculator, BarChart3, Paperclip, Shield, BookOpenCheck } from 'lucide-react';
+import { Menu, X, LogOut, ExternalLink, BookOpen, FileText, ShoppingCart, Truck, Handshake, Calculator, BarChart3, Paperclip, Shield } from 'lucide-react';
 
 const navItems = [
   { label: 'لوحة التحكم', labelEn: 'Dashboard', icon: Calculator, to: '/accounting', end: true },
@@ -26,42 +26,104 @@ export default function AccountingLayout() {
   };
 
   return (
-    <div dir="rtl" className="min-h-screen flex bg-[#F8F9FA]" style={{ fontFamily: "'Tajawal', sans-serif" }}>
-      {!collapsed && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" onClick={() => setCollapsed(true)} />}
-      <aside className={`fixed lg:static top-0 right-0 z-40 h-screen lg:h-auto w-[260px] min-h-screen bg-white border-l border-gray-200 flex flex-col shrink-0 transition-transform duration-300 ${collapsed ? 'translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden lg:border-0' : 'translate-x-0'}`}>
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>The View Avenue</h1>
-            <p className="text-xs text-gray-400 mt-0.5">النظام المحاسبي</p>
+    <div dir="rtl" className="min-h-screen flex" style={{ fontFamily: "'Tajawal', sans-serif", background: '#F0F2F5' }}>
+      {!collapsed && (
+        <div className="fixed inset-0 bg-black/60 z-30 lg:hidden" onClick={() => setCollapsed(true)} />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        fixed lg:static top-0 right-0 z-40 h-screen lg:h-auto
+        w-[260px] min-h-screen flex flex-col shrink-0
+        transition-transform duration-300
+        ${collapsed ? 'translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden lg:border-0' : 'translate-x-0'}
+      `} style={{ background: 'linear-gradient(180deg, #111111 0%, #1a1a1a 100%)', borderLeft: '1px solid rgba(212,175,55,0.15)' }}>
+
+        {/* Header */}
+        <div className="p-5 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="flex-1">
+            <img
+              src="/lifestyle-logo.png"
+              alt="شركة أسلوب حياة"
+              className="h-10 object-contain"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
+            <p className="text-xs mt-1" style={{ color: 'rgba(212,175,55,0.6)' }}>النظام المحاسبي</p>
           </div>
-          <button onClick={() => setCollapsed(true)} className="lg:hidden text-gray-400 hover:text-gray-600"><X className="h-5 w-5" /></button>
+          <button onClick={() => setCollapsed(true)} className="lg:hidden" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            <X className="h-5 w-5" />
+          </button>
         </div>
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+
+        {/* Navigation */}
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {navItems.map(item => (
-            <NavLink key={item.to} to={item.to} end={item.end}
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
               onClick={() => { if (window.innerWidth < 1024) setCollapsed(true); }}
-              className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${isActive ? 'bg-[#D4AF37]/10 text-[#D4AF37]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}>
-              <item.icon className="h-5 w-5" />
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? 'text-black'
+                    : 'text-gray-400 hover:text-white'
+                }`
+              }
+              style={({ isActive }) => isActive ? {
+                background: 'linear-gradient(135deg, #D4AF37 0%, #F0D060 100%)',
+                boxShadow: '0 4px 15px rgba(212,175,55,0.3)',
+              } : {}}
+            >
+              <item.icon className="h-4 w-4 shrink-0" />
               <span>{item.label}</span>
             </NavLink>
           ))}
-          <a href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-            <ExternalLink className="h-5 w-5" /><span>عرض الموقع</span>
+
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-white transition-all duration-200"
+          >
+            <ExternalLink className="h-4 w-4 shrink-0" />
+            <span>عرض الموقع</span>
           </a>
         </nav>
-        <div className="p-4 border-t border-gray-100">
-          <p className="text-xs text-gray-400 mb-2 truncate" dir="ltr">{user?.email}</p>
-          <button onClick={handleSignOut} className="flex items-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-50 transition-colors">
-            <LogOut className="h-4 w-4" /><span>تسجيل الخروج</span>
+
+        {/* Footer */}
+        <div className="p-4" style={{ borderTop: '1px solid rgba(212,175,55,0.15)' }}>
+          <p className="text-xs mb-3 truncate" style={{ color: 'rgba(255,255,255,0.3)' }} dir="ltr">{user?.email}</p>
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
+            style={{ color: '#ef4444', background: 'rgba(239,68,68,0.08)' }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239,68,68,0.15)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'rgba(239,68,68,0.08)')}
+          >
+            <LogOut className="h-4 w-4" />
+            <span>تسجيل الخروج</span>
           </button>
         </div>
       </aside>
 
+      {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 bg-white border-b border-gray-200 flex items-center px-4 lg:px-6 shrink-0">
-          <button onClick={() => setCollapsed(!collapsed)} className="text-gray-500 hover:text-gray-700 ml-3"><Menu className="h-5 w-5" /></button>
-          <span className="text-sm font-medium text-gray-700">النظام المحاسبي - Accounting System</span>
+        {/* Header Bar */}
+        <header className="h-14 bg-white flex items-center px-4 lg:px-6 shrink-0"
+          style={{ borderBottom: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-gray-500 hover:text-gray-700 ml-3 transition-colors"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full" style={{ background: '#D4AF37' }} />
+            <span className="text-sm font-medium text-gray-700">النظام المحاسبي — شركة أسلوب حياة</span>
+          </div>
         </header>
+
         <div className="flex-1 p-4 lg:p-6 overflow-auto">
           <Outlet />
         </div>

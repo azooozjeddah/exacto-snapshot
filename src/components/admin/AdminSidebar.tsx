@@ -64,10 +64,14 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
         transition-transform duration-300
         ${collapsed ? 'translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden lg:border-0' : 'translate-x-0'}
       `}>
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>The View Avenue</h1>
-            <p className="text-xs text-gray-400 mt-0.5">لوحة التحكم</p>
+        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+          <div className="flex-1">
+            <img
+              src="/lifestyle-logo.png"
+              alt="شركة أسلوب حياة"
+              className="h-12 object-contain"
+            />
+            <p className="text-xs text-gray-400 mt-1">النظام المحاسبي</p>
           </div>
           <button onClick={onToggle} className="lg:hidden text-gray-400 hover:text-gray-600">
             <X className="h-5 w-5" />
