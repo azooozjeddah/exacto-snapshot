@@ -6,49 +6,60 @@
 
 @layer base {
   :root {
-    --background: 220 20% 7%;
-    --foreground: 40 20% 90%;
+    /* Deep Charcoal Black - Luxury Background */
+    --background: 220 25% 4%;
+    --foreground: 40 15% 92%;
 
-    --card: 220 15% 12%;
-    --card-foreground: 40 20% 90%;
+    /* Elevated Card Backgrounds */
+    --card: 220 20% 8%;
+    --card-foreground: 40 15% 92%;
 
-    --popover: 220 15% 12%;
-    --popover-foreground: 40 20% 90%;
+    /* Popover Styling */
+    --popover: 220 20% 8%;
+    --popover-foreground: 40 15% 92%;
 
-    --primary: 42 65% 55%;
-    --primary-foreground: 220 20% 7%;
+    /* Matte Gold Primary Color (Rich, Not Bright) */
+    --primary: 43 70% 48%;
+    --primary-foreground: 220 25% 4%;
 
-    --secondary: 220 15% 16%;
-    --secondary-foreground: 40 20% 90%;
+    /* Secondary - Slightly Elevated from Background */
+    --secondary: 220 18% 14%;
+    --secondary-foreground: 40 15% 92%;
 
-    --muted: 220 12% 18%;
-    --muted-foreground: 220 10% 55%;
+    /* Muted Elements */
+    --muted: 220 15% 20%;
+    --muted-foreground: 220 12% 60%;
 
-    --accent: 42 65% 55%;
-    --accent-foreground: 220 20% 7%;
+    /* Accent - Matte Gold */
+    --accent: 43 70% 48%;
+    --accent-foreground: 220 25% 4%;
 
+    /* Destructive State */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 12% 20%;
-    --input: 220 12% 20%;
-    --ring: 42 65% 55%;
+    /* Borders and Inputs */
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 43 70% 48%;
 
+    /* Border Radius */
     --radius: 0.5rem;
 
-    --gold: 42 65% 55%;
-    --gold-light: 42 60% 70%;
-    --gold-dark: 42 70% 40%;
-    --surface-elevated: 220 15% 14%;
+    /* Matte Gold Variations */
+    --gold: 43 70% 48%;
+    --gold-light: 43 65% 62%;
+    --gold-dark: 43 75% 38%;
+    --surface-elevated: 220 20% 10%;
 
-    --sidebar-background: 220 20% 7%;
-    --sidebar-foreground: 40 20% 90%;
-    --sidebar-primary: 42 65% 55%;
-    --sidebar-primary-foreground: 220 20% 7%;
-    --sidebar-accent: 220 15% 16%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 220 12% 20%;
-    --sidebar-ring: 42 65% 55%;
+    --sidebar-background: 220 25% 4%;
+    --sidebar-foreground: 40 15% 92%;
+    --sidebar-primary: 43 70% 48%;
+    --sidebar-primary-foreground: 220 25% 4%;
+    --sidebar-accent: 220 18% 14%;
+    --sidebar-accent-foreground: 40 15% 92%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 43 70% 48%;
   }
 }
 
@@ -150,9 +161,9 @@
 }
 
 .hero-text-white {
-  color: #FFFFFF !important;
+  color: #F5F5F5 !important;
 }
 
 .hero-text-gold {
-  color: #D4AF37 !important;
+  color: #C9A961 !important;
 }
