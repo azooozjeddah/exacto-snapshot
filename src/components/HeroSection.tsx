@@ -3,7 +3,7 @@ import { useTypewriter } from "@/hooks/use-typewriter";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { supabase } from "@/integrations/supabase/client";
 import { Menu, X } from "lucide-react";
-import heroBgFallback from "@/assets/hero-bg.jpg";
+// Removed fallback image to prevent flickering - now uses black background during loading
 import logo from "@/assets/logo-transparent.png";
 
 const navLinks: { href: string; label: string; external?: boolean }[] = [
@@ -16,7 +16,7 @@ const navLinks: { href: string; label: string; external?: boolean }[] = [
 
 const HeroSection = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [heroBg, setHeroBg] = useState(heroBgFallback);
+  const [heroBg, setHeroBg] = useState('');
   const { get } = useSiteSettings();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const HeroSection = () => {
 
       console.log('[hero] fetched photos', data, error);
       if (data?.[0]?.url) setHeroBg(data[0].url);
-      else setHeroBg(heroBgFallback);
+      else setHeroBg('');
     };
 
     fetchHero();
@@ -51,9 +51,10 @@ const HeroSection = () => {
   ], { typeSpeed: 120, deleteSpeed: 70, holdTime: 3500 });
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <img src={heroBg} alt="The View Avenue" className="absolute inset-0 w-full h-full object-cover blur-[0.5px]" width={1920} height={1080} />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      {heroBg && <img src={heroBg} alt="The View Avenue" className="absolute inset-0 w-full h-full object-cover blur-[0.5px]" width={1920} height={1080} />}
       <div className="absolute inset-0 bg-black/20" />
+      {!heroBg && <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black" />}
       <div className="hero-overlay absolute inset-0" />
 
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-3 md:py-4 bg-black/80 backdrop-blur-[12px] border-b border-gold/20" dir="rtl">
