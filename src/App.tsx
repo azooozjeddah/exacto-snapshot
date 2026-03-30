@@ -6,7 +6,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AdminLogin from "./pages/admin/AdminLogin.tsx";
+import AdminForgotPassword from "./pages/admin/AdminForgotPassword.tsx";
+import AdminResetPassword from "./pages/admin/AdminResetPassword.tsx";
 import AccountingLogin from "./pages/accounting/AccountingLogin.tsx";
+import AccountingForgotPassword from "./pages/accounting/AccountingForgotPassword.tsx";
+import AccountingResetPassword from "./pages/accounting/AccountingResetPassword.tsx";
 import AdminLayout from "./layouts/AdminLayout.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminSettings from "./pages/admin/AdminSettings.tsx";
@@ -43,7 +47,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+          <Route path="/admin/reset-password" element={<AdminResetPassword />} />
           <Route path="/accounting/login" element={<AccountingLogin />} />
+          <Route path="/accounting/forgot-password" element={<AccountingForgotPassword />} />
+          <Route path="/accounting/reset-password" element={<AccountingResetPassword />} />
 
           {/* ═══ Admin Panel ═══ */}
           <Route

@@ -1,44 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { useUserRole } from '@/hooks/useUserRole';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LogIn, HelpCircle } from 'lucide-react';
+import { Mail, ArrowRight } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
-export default function AccountingLogin() {
+export default function AccountingForgotPassword() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { user, signIn } = useAuth();
-  const { role, loading: roleLoading } = useUserRole();
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user && role && !roleLoading) {
-      if (['accountant', 'data_entry'].includes(role)) {
-        navigate('/accounting', { replace: true });
-      } else if (role === 'admin') {
-        navigate('/accounting', { replace: true });
-      }
-    }
-  }, [user, role, roleLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setMessage('');
 
-    if (!email.trim() || !password.trim()) {
-      setError('يرجى إدخال البريد الإلكتروني وكلمة المرور');
+    if (!email.trim()) {
+      setError('يرجى إدخال بريدك الإلكتروني');
       return;
     }
 
     setLoading(true);
-    const { error: signInError } = await signIn(email.trim(), password);
-    if (signInError) {
-      setError('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+    try {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/accounting/reset-password`,
+      });
+
+      if (resetError) {
+        setError('حدث خطأ أثناء إرسال رابط الاستعادة. تأكد من البريد الإلكتروني.');
+      } else {
+        setMessage('تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني. يرجى التحقق من بريدك.');
+        setEmail('');
+      }
+    } catch (err) {
+      setError('حدث خطأ غير متوقع. يرجى المحاولة لاحقاً.');
+    } finally {
       setLoading(false);
     }
   };
@@ -58,7 +57,6 @@ export default function AccountingLogin() {
           style={{ background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)', transform: 'translate(30%, -30%)' }} />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-5"
           style={{ background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)', transform: 'translate(-30%, 30%)' }} />
-        {/* خطوط ذهبية خفيفة */}
         <div className="absolute inset-0" style={{
           backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 60px, rgba(212,175,55,0.03) 60px, rgba(212,175,55,0.03) 61px)',
         }} />
@@ -77,21 +75,24 @@ export default function AccountingLogin() {
             />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">
-            النظام المحاسبي
+            استعادة كلمة المرور
           </h1>
           <p className="text-sm" style={{ color: '#D4AF37' }}>
-            شركة أسلوب حياة للتطوير العقاري
+            النظام المحاسبي
           </p>
         </div>
 
-        {/* بطاقة تسجيل الدخول */}
+        {/* بطاقة استعادة كلمة المرور */}
         <div className="rounded-2xl p-8"
           style={{
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(212,175,55,0.2)',
             backdropFilter: 'blur(10px)',
           }}>
-          <h2 className="text-lg font-bold text-white mb-6 text-center">تسجيل الدخول</h2>
+          <h2 className="text-lg font-bold text-white mb-2 text-center">نسيت كلمة المرور؟</h2>
+          <p className="text-sm text-gray-400 text-center mb-6">
+            أدخل بريدك الإلكتروني وسنرسل لك رابطاً لاستعادة كلمة المرور
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
@@ -102,7 +103,7 @@ export default function AccountingLogin() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                onChange={(e) => { setEmail(e.target.value); setError(''); setMessage(''); }}
                 placeholder="accountant@example.com"
                 required
                 maxLength={255}
@@ -110,40 +111,6 @@ export default function AccountingLogin() {
                 className="h-12 text-white placeholder:text-gray-600 border-0 rounded-xl"
                 style={{
                   background: 'rgba(255,255,255,0.07)',
-                  outline: 'none',
-                  boxShadow: 'inset 0 0 0 1px rgba(212,175,55,0.25)',
-                }}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-gray-300 text-sm font-medium">
-                  كلمة المرور
-                </Label>
-                <button
-                  type="button"
-                  onClick={() => navigate('/accounting/forgot-password')}
-                  className="text-xs transition-colors"
-                  style={{ color: '#D4AF37' }}
-                >
-                  <HelpCircle className="inline h-3 w-3 ml-1" />
-                  نسيت كلمة المرور؟
-                </button>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => { setPassword(e.target.value); setError(''); }}
-                placeholder="••••••••"
-                required
-                maxLength={128}
-                dir="ltr"
-                className="h-12 text-white placeholder:text-gray-600 border-0 rounded-xl"
-                style={{
-                  background: 'rgba(255,255,255,0.07)',
-                  outline: 'none',
                   boxShadow: 'inset 0 0 0 1px rgba(212,175,55,0.25)',
                 }}
               />
@@ -152,6 +119,12 @@ export default function AccountingLogin() {
             {error && (
               <p className="text-red-400 text-sm text-center bg-red-500/10 border border-red-500/20 p-3 rounded-xl">
                 {error}
+              </p>
+            )}
+
+            {message && (
+              <p className="text-green-400 text-sm text-center bg-green-500/10 border border-green-500/20 p-3 rounded-xl">
+                {message}
               </p>
             )}
 
@@ -166,10 +139,22 @@ export default function AccountingLogin() {
               {loading ? (
                 <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
               ) : (
-                <><LogIn className="ml-2 h-5 w-5" />تسجيل الدخول</>
+                <><Mail className="ml-2 h-5 w-5" />إرسال رابط الاستعادة</>
               )}
             </Button>
           </form>
+
+          <button
+            onClick={() => navigate('/accounting/login')}
+            className="w-full mt-4 h-12 text-base font-bold rounded-xl border-2 text-white transition-all"
+            style={{
+              borderColor: 'rgba(212,175,55,0.4)',
+              color: '#D4AF37',
+              background: 'transparent',
+            }}
+          >
+            <><ArrowRight className="ml-2 h-5 w-5 inline" />العودة إلى تسجيل الدخول</>
+          </button>
         </div>
 
         <p className="text-center text-xs mt-6" style={{ color: 'rgba(212,175,55,0.4)' }}>
