@@ -39,7 +39,7 @@ const PartnersSection = () => {
     <section id="partners" className="py-24 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gold-gradient mb-4">المحلات والمطاعم</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-[#C9A961] mb-4">المحلات والمطاعم</h2>
           <div className="section-divider w-24 mx-auto mb-6" />
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">اكتشف مجموعة مختارة من أرقى العلامات التجارية والمطاعم والمقاهي في ذا فيو أفينيو.</p>
         </div>

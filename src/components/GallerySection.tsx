@@ -58,7 +58,7 @@ const GallerySection = () => {
       <section id="gallery" className="py-24 px-4 bg-secondary/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-gold-gradient mb-4">معرض المشروع</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-[#C9A961] mb-4">معرض المشروع</h2>
             <div className="section-divider w-24 mx-auto mb-6" />
             <p className="text-muted-foreground text-lg max-w-xl mx-auto">صور حقيقية من موقع المشروع</p>
           </div>

@@ -41,7 +41,8 @@ const FooterSection = () => {
             <h4 className="text-foreground font-bold mb-4">تواصل معنا</h4>
             <ul className="space-y-3 text-muted-foreground text-sm">
               <li>جدة، المملكة العربية السعودية</li>
-              <li dir="ltr" className="text-left">{email}</li>
+              <li dir="ltr" className="text-left">+966 555 610 198</li>
+              <li dir="ltr" className="text-left">theviewavenue.sa@gmail.com</li>
             </ul>
           </div>
         </div>

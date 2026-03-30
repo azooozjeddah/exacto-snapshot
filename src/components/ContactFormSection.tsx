@@ -24,24 +24,25 @@ const ContactFormSection = () => {
     }
     setSending(true);
 
-    // Save to database
-    await supabase.from("contact_messages").insert({
-      name: form.name.trim(),
-      email: form.email.trim(),
-      subject: form.subject.trim(),
-      message: form.message.trim(),
-      send_method: "both",
-    });
+    try {
+      // Save to database only
+      const { error } = await supabase.from("contact_messages").insert({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        subject: form.subject.trim(),
+        message: form.message.trim(),
+        send_method: "email",
+      });
 
-    // Send via WhatsApp
-    const text = encodeURIComponent(
-      `📩 استفسار جديد\n\nالاسم: ${form.name}\nالبريد: ${form.email}\nالموضوع: ${form.subject}\nالرسالة: ${form.message}`
-    );
-    window.open(`https://wa.me/${whatsapp}?text=${text}`, "_blank");
+      if (error) throw error;
 
-    toast({ title: "شكراً! تم استقبال رسالتك. سيتم الرد عليك قريباً ✓" });
-    setForm({ name: "", email: "", subject: "", message: "" });
-    setSending(false);
+      toast({ title: "شكراً! تم استقبال رسالتك. سيتم الرد عليك قريباً ✓" });
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      toast({ title: "حدث خطأ. يرجى المحاولة لاحقاً", variant: "destructive" });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -59,13 +60,18 @@ const ContactFormSection = () => {
         </div>
 
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-gold-gradient mb-4">تواصل معنا</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-[#C9A961] mb-4">تواصل معنا</h2>
           <div className="section-divider w-24 mx-auto mb-6" />
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
             أرسل استفسارك وسنرد عليك في أقرب وقت
             <br />
             <span className="text-sm">Send your inquiry and we'll respond soon</span>
           </p>
+          <div className="mt-6 text-center">
+            <p className="text-foreground text-lg font-semibold">رقم التواصل / Contact:</p>
+            <p className="text-[#C9A961] text-2xl font-bold mt-2" dir="ltr" style={{ direction: 'ltr', unicodeBidi: 'bidi-override' }}>+966 555 610 198</p>
+            <p className="text-muted-foreground text-sm mt-2" dir="ltr" style={{ direction: 'ltr' }}>Email: theviewavenue.sa@gmail.com</p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-card border border-primary/30 rounded-2xl p-8 md:p-12 glow-gold space-y-6">
@@ -87,7 +93,7 @@ const ContactFormSection = () => {
             <Label htmlFor="c-message" className="text-foreground">الرسالة / Message *</Label>
             <Textarea id="c-message" placeholder="اكتب رسالتك أو استفسارك هنا..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} maxLength={2000} className="bg-secondary border-border focus:border-primary min-h-[120px]" />
           </div>
-          <Button type="submit" disabled={sending} className="w-full bg-gold-gradient text-primary-foreground font-bold text-lg py-6 rounded-xl hover:opacity-90 transition-opacity">
+          <Button type="submit" disabled={sending} className="w-full bg-[#C9A961] text-primary-foreground font-bold text-lg py-6 rounded-xl hover:opacity-90 transition-opacity">
             <Send className="w-5 h-5 ml-2" /> إرسال / Send
           </Button>
         </form>

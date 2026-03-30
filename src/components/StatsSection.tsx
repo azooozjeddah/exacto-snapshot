@@ -45,14 +45,14 @@ const StatsSection = () => {
           {stats.map((stat, i) => (
             <div key={i} className="bg-card border border-border rounded-xl p-6 text-center glow-gold hover:border-primary/50 transition-all duration-300">
               <stat.icon className="w-8 h-8 text-primary mx-auto mb-3" />
-              <p className="text-3xl md:text-4xl font-bold text-gold-gradient mb-1">{stat.value}</p>
+              <p className="text-3xl md:text-4xl font-bold text-[#C9A961] mb-1">{stat.value}</p>
               <p className="text-foreground font-semibold text-sm">{stat.label}</p>
               <p className="text-muted-foreground text-xs mt-1">{stat.sublabel}</p>
             </div>
           ))}
-          <a href="https://maps.app.goo.gl/ndhpYT4uhi4D1Bh47" target="_blank" rel="noopener noreferrer" className="bg-card border border-border rounded-xl p-6 text-center glow-gold hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+          <a href="https://maps.app.goo.gl/7mpnw297hrf2jHQt5" target="_blank" rel="noopener noreferrer" className="bg-card border border-border rounded-xl p-6 text-center glow-gold hover:border-primary/50 transition-all duration-300 group cursor-pointer">
             <MapPin className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
-            <p className="text-lg md:text-xl font-bold text-gold-gradient mb-1">موقع مميز</p>
+            <p className="text-lg md:text-xl font-bold text-[#C9A961] mb-1">موقع مميز</p>
             <p className="text-foreground font-semibold text-sm">حي الفردوس، أبحر الشمالية</p>
             <p className="text-muted-foreground text-xs mt-1">Prime Location</p>
           </a>
