@@ -1,4 +1,4 @@
-import logo from "@/assets/logo-transparent.png";
+import logo from "@/assets/logo-luxury.png";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const FooterSection = () => {
