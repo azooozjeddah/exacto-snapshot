@@ -39,22 +39,22 @@ const StatsSection = () => {
   }, []);
 
   return (
-    <section className="py-16 px-4 relative -mt-20 z-10">
+    <section className="py-16 px-4 relative -mt-24 z-20">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
-            <div key={i} className="bg-card border border-border rounded-xl p-6 text-center glow-gold hover:border-primary/50 transition-all duration-300">
-              <stat.icon className="w-8 h-8 text-primary mx-auto mb-3" />
-              <p className="text-3xl md:text-4xl font-bold text-[#C9A961] mb-1">{stat.value}</p>
-              <p className="text-foreground font-semibold text-sm">{stat.label}</p>
-              <p className="text-muted-foreground text-xs mt-1">{stat.sublabel}</p>
+            <div key={i} className="bg-[#1c1c1e] border border-[#DBB155]/20 p-8 text-center shadow-2xl shadow-black/50 hover:border-[#DBB155]/50 transition-all duration-500">
+              <stat.icon className="w-10 h-10 text-[#DBB155] mx-auto mb-4" />
+              <p className="text-4xl md:text-5xl font-bold text-[#F5EEE0] mb-2">{stat.value}</p>
+              <p className="text-[#DBB155] font-bold text-sm tracking-widest uppercase">{stat.label}</p>
+              <p className="text-[#F5EEE0]/40 text-xs mt-2 font-light">{stat.sublabel}</p>
             </div>
           ))}
-          <a href="https://maps.app.goo.gl/7mpnw297hrf2jHQt5" target="_blank" rel="noopener noreferrer" className="bg-card border border-border rounded-xl p-6 text-center glow-gold hover:border-primary/50 transition-all duration-300 group cursor-pointer">
-            <MapPin className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
-            <p className="text-lg md:text-xl font-bold text-[#C9A961] mb-1">موقع مميز</p>
-            <p className="text-foreground font-semibold text-sm">حي الفردوس، أبحر الشمالية</p>
-            <p className="text-muted-foreground text-xs mt-1">Prime Location</p>
+          <a href="https://maps.app.goo.gl/7mpnw297hrf2jHQt5" target="_blank" rel="noopener noreferrer" className="bg-[#1c1c1e] border border-[#DBB155]/20 p-8 text-center shadow-2xl shadow-black/50 hover:border-[#DBB155]/50 transition-all duration-500 group">
+            <MapPin className="w-10 h-10 text-[#DBB155] mx-auto mb-4 group-hover:scale-110 transition-transform" />
+            <p className="text-2xl md:text-3xl font-bold text-[#F5EEE0] mb-2">موقع مميز</p>
+            <p className="text-[#DBB155] font-bold text-sm tracking-widest uppercase">أبحر الشمالية</p>
+            <p className="text-[#F5EEE0]/40 text-xs mt-2 font-light">Prime Location</p>
           </a>
         </div>
       </div>

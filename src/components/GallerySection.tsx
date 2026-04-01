@@ -33,7 +33,6 @@ const GallerySection = () => {
         .eq('is_active', true)
         .order('sort_order');
 
-      console.log('[gallery] fetched photos', data, error);
       if (data && data.length > 0) {
         setImages(data.map((p) => ({ url: p.url, alt: p.alt_text_ar || 'The View Avenue' })));
       } else {
@@ -55,17 +54,18 @@ const GallerySection = () => {
 
   return (
     <>
-      <section id="gallery" className="py-24 px-4 bg-secondary/30">
+      <section id="gallery" className="py-24 px-4 bg-[#161618]">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#C9A961] mb-4">معرض المشروع</h2>
-            <div className="section-divider w-24 mx-auto mb-6" />
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto">صور حقيقية من موقع المشروع</p>
+          <div className="text-center mb-20">
+            <p className="text-[#DBB155] text-sm font-bold tracking-widest uppercase mb-4">معرض الصور</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#F5EEE0] mb-6">جولة في المشروع</h2>
+            <div className="w-24 h-1 bg-[#DBB155] mx-auto mb-8" />
+            <p className="text-[#F5EEE0]/60 text-lg max-w-2xl mx-auto font-light">صور حقيقية وتخيلية تعكس جمال وتفاصيل ذا فيو أفينيو</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {images.map((img, i) => (
-              <button key={i} onClick={() => setLightbox(i)} className={`overflow-hidden rounded-lg glow-gold cursor-pointer group ${i === 0 ? "col-span-2 row-span-2" : ""}`}>
-                <img src={img.url} alt={img.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" style={{ minHeight: i === 0 ? "320px" : "180px" }} />
+              <button key={i} onClick={() => setLightbox(i)} className={`overflow-hidden border border-[#DBB155]/10 hover:border-[#DBB155]/40 cursor-pointer group transition-all duration-500 ${i === 0 ? "col-span-2 row-span-2" : ""}`}>
+                <img src={img.url} alt={img.alt} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" loading="lazy" style={{ minHeight: i === 0 ? "400px" : "200px" }} />
               </button>
             ))}
           </div>
@@ -73,12 +73,14 @@ const GallerySection = () => {
       </section>
 
       {lightbox !== null && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
-          <button onClick={(e) => { e.stopPropagation(); closeLightbox(); }} className="absolute top-6 right-6 text-foreground/70 hover:text-foreground transition-colors"><X className="w-8 h-8" /></button>
-          <button onClick={(e) => { e.stopPropagation(); prev(); }} className="absolute left-4 text-foreground/70 hover:text-foreground transition-colors"><ChevronLeft className="w-10 h-10" /></button>
-          <button onClick={(e) => { e.stopPropagation(); next(); }} className="absolute right-4 text-foreground/70 hover:text-foreground transition-colors"><ChevronRight className="w-10 h-10" /></button>
-          <img src={images[lightbox].url} alt={images[lightbox].alt} className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg" onClick={(e) => e.stopPropagation()} />
-          <div className="absolute bottom-6 text-foreground/50 text-sm">{lightbox + 1} / {images.length}</div>
+        <div className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center backdrop-blur-sm" onClick={closeLightbox}>
+          <button onClick={(e) => { e.stopPropagation(); closeLightbox(); }} className="absolute top-8 right-8 text-[#DBB155] hover:text-[#F5EEE0] transition-colors"><X className="w-10 h-10" /></button>
+          <button onClick={(e) => { e.stopPropagation(); prev(); }} className="absolute left-6 text-[#DBB155] hover:text-[#F5EEE0] transition-colors"><ChevronLeft className="w-12 h-12" /></button>
+          <button onClick={(e) => { e.stopPropagation(); next(); }} className="absolute right-6 text-[#DBB155] hover:text-[#F5EEE0] transition-colors"><ChevronRight className="w-12 h-12" /></button>
+          <div className="relative p-4 max-w-5xl w-full">
+            <img src={images[lightbox].url} alt={images[lightbox].alt} className="max-h-[80vh] w-full object-contain border border-[#DBB155]/20" onClick={(e) => e.stopPropagation()} />
+            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-[#DBB155] font-bold tracking-widest">{lightbox + 1} / {images.length}</div>
+          </div>
         </div>
       )}
     </>

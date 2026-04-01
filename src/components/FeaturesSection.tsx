@@ -1,37 +1,38 @@
-import { MapPin, Waves, Building2, Zap, TreePine, Sparkles } from "lucide-react";
+import { MapPin, Waves, Building2, Zap, TreePine, Sparkles, Coffee, ShieldCheck, Sun, Wifi } from "lucide-react";
 
 const features = [
-  { icon: MapPin, title: "موقع حيوي", description: "يقع في شارع الأمير نايف بأبحر الشمالية" },
-  { icon: Waves, title: "قرب واجهة جدة", description: "يبعد 800 متر فقط عن واجهة جدة الساحلية" },
-  { icon: Building2, title: "قرب برج جدة", description: "على بُعد 6 كيلومتر من برج جدة الشهير" },
-  { icon: Zap, title: "شحن السيارات الكهربائية", description: "مواقف مخصصة وحديثة للسيارات الكهربائية" },
-  { icon: TreePine, title: "حدائق وزراعة", description: "مساحات خضراء وأشجار طبيعية جميلة" },
-  { icon: Sparkles, title: "مساحات خارجية أنيقة", description: "تصميم عصري وفاخر مع مناظر خلابة" },
+  { icon: Coffee, title: "فود كورت متكامل", description: "منطقة مطاعم فاخرة تضم أشهر العلامات التجارية العالمية والمحلية مع جلسات داخلية وخارجية" },
+  { icon: Building2, title: "مكاتب إدارية", description: "مكاتب بتصاميم عصرية ومواصفات عالمية مجهزة بأحدث التقنيات لبيئة عمل مثالية" },
+  { icon: MapPin, title: "محلات تجارية", description: "وحدات تجارية متنوعة المساحات بواجهات زجاجية أنيقة تناسب مختلف الأنشطة التجارية" },
+  { icon: Zap, title: "درايف ثرو", description: "خدمة درايف ثرو مريحة وسريعة للمطاعم والمقاهي لتجربة تسوق سلسة" },
+  { icon: Waves, title: "نوافير ومسطحات مائية", description: "نوافير مائية وبحيرات صناعية تضفي أجواء من الهدوء والجمال على المساحات المفتوحة" },
+  { icon: Sun, title: "طاقة شمسية", description: "ألواح طاقة شمسية صديقة للبيئة تساهم في تقليل استهلاك الطاقة والحفاظ على البيئة" },
+  { icon: ShieldCheck, title: "أمن وحراسة", description: "نظام أمني متكامل على مدار الساعة مع كاميرات مراقبة وحراسة أمنية مدربة" },
+  { icon: Wifi, title: "بنية تحتية ذكية", description: "بنية تحتية تقنية متطورة تشمل إنترنت عالي السرعة وأنظمة إدارة المباني الذكية" },
 ];
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-24 px-4 bg-secondary/30">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-[#C9A961] mb-4">مميزات المشروع</h2>
-          <div className="section-divider w-24 mx-auto mb-6" />
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">معايير جديدة للتطوير التجاري الفاخر في قلب جدة</p>
+    <section id="features" className="py-24 px-4 bg-[#161618]">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-20">
+          <p className="text-[#DBB155] text-sm font-bold tracking-widest uppercase mb-4">المميزات</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#F5EEE0] mb-6">تميّز بلا حدود</h2>
+          <div className="w-24 h-1 bg-[#DBB155] mx-auto mb-8" />
+          <p className="text-[#F5EEE0]/60 text-lg max-w-2xl mx-auto font-light">مميزات استثنائية تجعل من ذا فيو أفينيو الوجهة الأولى للاستثمار والتسوق في جدة</p>
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="flex items-center gap-5 p-6 rounded-xl bg-card border border-border hover:border-primary/40 transition-all duration-300 group"
+              className="p-8 bg-[#1c1c1e] border border-[#DBB155]/10 hover:border-[#DBB155]/40 transition-all duration-500 group text-center"
               dir="rtl"
             >
-              <div className="w-14 h-14 min-w-[3.5rem] rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <feature.icon className="w-7 h-7 text-primary" />
+              <div className="w-16 h-16 mx-auto mb-6 bg-[#DBB155]/5 flex items-center justify-center group-hover:bg-[#DBB155]/10 transition-colors">
+                <feature.icon className="w-8 h-8 text-[#DBB155]" />
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-foreground mb-1">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-              </div>
+              <h3 className="text-xl font-bold text-[#F5EEE0] mb-4">{feature.title}</h3>
+              <p className="text-[#F5EEE0]/60 text-sm leading-relaxed font-light">{feature.description}</p>
             </div>
           ))}
         </div>

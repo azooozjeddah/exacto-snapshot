@@ -36,31 +36,34 @@ const PartnersSection = () => {
   }, []);
 
   return (
-    <section id="partners" className="py-24 px-4">
+    <section id="partners" className="py-24 px-4 bg-[#161618]">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-[#C9A961] mb-4">المحلات والمطاعم</h2>
-          <div className="section-divider w-24 mx-auto mb-6" />
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">اكتشف مجموعة مختارة من أرقى العلامات التجارية والمطاعم والمقاهي في ذا فيو أفينيو.</p>
+        <div className="text-center mb-20">
+          <p className="text-[#DBB155] text-sm font-bold tracking-widest uppercase mb-4">المرافق</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#F5EEE0] mb-6">عالم من الخيارات</h2>
+          <div className="w-24 h-1 bg-[#DBB155] mx-auto mb-8" />
+          <p className="text-[#F5EEE0]/60 text-lg max-w-2xl mx-auto font-light">مجموعة مختارة من أرقى العلامات التجارية والمطاعم والمقاهي التي تلبي تطلعاتكم</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {tenants.map((tenant: any, index) => (
-            <div key={index} className="group relative overflow-hidden rounded-xl border border-border bg-card hover:border-primary/60 transition-all duration-500">
-              <div className="relative h-56 overflow-hidden">
+            <div key={index} className="group bg-[#1c1c1e] border border-[#DBB155]/10 overflow-hidden shadow-2xl shadow-black/50 hover:border-[#DBB155]/40 transition-all duration-500">
+              <div className="relative h-72 overflow-hidden">
                 {tenant.image ? (
-                  <img src={tenant.image} alt={tenant.nameAr} className={`w-full h-full transition-transform duration-700 group-hover:scale-105 ${tenant.isLogo ? "object-contain p-8 bg-black/80" : "object-cover"}`} />
+                  <img src={tenant.image} alt={tenant.nameAr} className={`w-full h-full transition-transform duration-1000 group-hover:scale-110 ${tenant.isLogo ? "object-contain p-12 bg-black/40" : "object-cover"}`} />
                 ) : (
-                  <div className="w-full h-full bg-card flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary/30">{tenant.nameAr?.[0]}</span>
+                  <div className="w-full h-full bg-[#1c1c1e] flex items-center justify-center">
+                    <span className="text-6xl font-bold text-[#DBB155]/20">{tenant.nameAr?.[0]}</span>
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#161618] via-transparent to-transparent opacity-60" />
               </div>
-              <div className="p-6 text-right" dir="rtl">
-                <h3 className="text-xl font-bold text-primary mb-1">{tenant.nameAr}</h3>
-                {tenant.name && <p className="text-sm text-primary/60 font-medium mb-3 tracking-wide" dir="ltr">{tenant.name}</p>}
-                {fromDb && tenant.type && <span className="text-xs text-muted-foreground bg-secondary px-2 py-1 rounded-full mb-2 inline-block">{typeLabels[tenant.type] || tenant.type}</span>}
-                <p className="text-muted-foreground leading-relaxed text-sm">{tenant.description}</p>
+              <div className="p-10 text-right" dir="rtl">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-2xl font-bold text-[#DBB155]">{tenant.nameAr}</h3>
+                  {fromDb && tenant.type && <span className="text-[10px] font-bold text-[#DBB155] border border-[#DBB155]/30 px-3 py-1 uppercase tracking-widest">{typeLabels[tenant.type] || tenant.type}</span>}
+                </div>
+                {tenant.name && <p className="text-sm text-[#F5EEE0]/40 font-bold mb-6 tracking-widest uppercase" dir="ltr">{tenant.name}</p>}
+                <p className="text-[#F5EEE0]/60 leading-relaxed text-lg font-light">{tenant.description}</p>
               </div>
             </div>
           ))}
