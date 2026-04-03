@@ -25,7 +25,7 @@ const ContactFormSection = () => {
     setSending(true);
 
     try {
-      // Save to database only
+      // Save to database
       const { error } = await supabase.from("contact_messages").insert({
         name: form.name.trim(),
         email: form.email.trim(),
@@ -35,6 +35,21 @@ const ContactFormSection = () => {
       });
 
       if (error) throw error;
+
+      // Send email notification to admin via Edge Function
+      try {
+        await supabase.functions.invoke("send-contact-email", {
+          body: {
+            name: form.name.trim(),
+            email: form.email.trim(),
+            subject: form.subject.trim(),
+            message: form.message.trim(),
+          },
+        });
+      } catch (emailError) {
+        // Email sending failed silently - message is still saved in DB
+        console.error("Email notification failed:", emailError);
+      }
 
       toast({ title: "شكراً! تم استقبال رسالتك. سيتم الرد عليك قريباً ✓" });
       setForm({ name: "", email: "", subject: "", message: "" });

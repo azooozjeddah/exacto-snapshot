@@ -2,7 +2,7 @@ const DeveloperSection = () => {
   return (
     <section className="py-24 px-4 bg-secondary/30">
       <div className="max-w-4xl mx-auto text-center">
-        <p className="text-primary text-sm tracking-widest uppercase mb-4 font-body">الشركة المنفذة</p>
+        <p className="text-primary text-lg md:text-2xl tracking-widest uppercase mb-6 font-bold">الشركة المنفذة</p>
         <div className="mb-6 flex justify-center">
           <img src="/lifestyle-logo.png" alt="أسلوب حياة" className="h-20 md:h-24 filter brightness-0 invert" />
         </div>
