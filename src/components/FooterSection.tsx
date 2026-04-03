@@ -24,6 +24,8 @@ const FooterSection = () => {
               <li><a href="#gallery" className="hover:text-[#DBB155] transition-colors">المميزات</a></li>
               <li><a href="#partners" className="hover:text-[#DBB155] transition-colors">المرافق</a></li>
               <li><a href="#location" className="hover:text-[#DBB155] transition-colors">الموقع</a></li>
+              <li><a href="/admin/login" className="hover:text-[#DBB155] transition-colors">لوحة التحكم</a></li>
+              <li><a href="/accounting/login" className="hover:text-[#DBB155] transition-colors">النظام المحاسبي</a></li>
             </ul>
           </div>
           <div>

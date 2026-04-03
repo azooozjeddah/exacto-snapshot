@@ -163,6 +163,10 @@ export default function AdminLogin() {
                 <><LogIn className="ml-2 h-5 w-5" />تسجيل الدخول</>
               )}
             </Button>
+
+            <p className="text-center text-xs mt-3" style={{ color: 'rgba(212,175,55,0.5)' }} dir="ltr">
+              admin@theviewavenue.net
+            </p>
           </form>
         </div>
 
