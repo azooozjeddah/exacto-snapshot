@@ -43,7 +43,7 @@ const ContactFormSection = () => {
     } finally {
       setSending(false);
     }
-  };
+  }
 
   return (
     <section id="contact" className="py-24 px-4">
