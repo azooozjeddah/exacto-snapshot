@@ -31,7 +31,7 @@ const FooterSection = () => {
             <ul className="space-y-4 text-[#F5EEE0]/70 text-base">
               <li>أبحر الشمالية، حي القادسية، جدة</li>
               <li dir="ltr" className="text-right">+966 555 610 198</li>
-              <li dir="ltr" className="text-right">theviewavenue.sa@gmail.com</li>
+              <li dir="ltr" className="text-right"> info@theviewavenue.net</li>
             </ul>
           </div>
         </div>
