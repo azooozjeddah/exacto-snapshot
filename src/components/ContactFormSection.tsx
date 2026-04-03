@@ -75,7 +75,7 @@ const ContactFormSection = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="bg-card border border-primary/30 rounded-2xl p-8 md:p-12 glow-gold space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <dv className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="c-name" className="text-foreground">الاسم / Name *</Label>
               <Input id="c-name" placeholder="أدخل اسمك الكامل" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={100} className="bg-secondary border-border focus:border-primary" />
