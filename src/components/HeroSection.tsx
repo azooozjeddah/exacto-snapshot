@@ -80,7 +80,7 @@ const HeroSection = () => {
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-28 md:pt-32">
         <div className="animate-fade-in">
-          <img src={logo} alt="The View Avenue Logo" className="h-24 md:h-32 mx-auto mb-6 transition-all duration-500 hover:scale-105" />
+          <img src={logo} alt="The View Avenue Logo" className="h-24 md:h-44 mx-auto mb-6 transition-all duration-500 hover:scale-105" />
           <p className="text-[#DBB155] text-sm md:text-base font-bold tracking-[0.3em] uppercase mb-4">أيقونة الرفاهية في جدة</p>
           <h1 className="font-bold mb-4 leading-tight min-h-[3.5rem] md:min-h-[5rem]">
             <span className="text-[#F5EEE0] block text-4xl md:text-5xl lg:text-6xl tracking-wider">
