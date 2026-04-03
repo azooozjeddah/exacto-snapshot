@@ -39,7 +39,7 @@ const StatsSection = () => {
   }, []);
 
   return (
-    <section className="py-16 px-4 relative mt-0 md:-mt-16 z-20">
+    <section className="py-16 px-4 relative mt-0 md:mt-8 z-20">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, i) => (

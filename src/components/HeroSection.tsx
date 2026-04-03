@@ -91,17 +91,13 @@ const HeroSection = () => {
           <p className="text-[#DBB155] text-xl md:text-2xl font-bold mb-8">للفخامة تعلو</p>
           <p className="text-[#F5EEE0]/80 max-w-2xl mx-auto leading-relaxed text-lg md:text-xl">{subtitleAr}</p>
           <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-4">
-            <a href="#features" className="btn-luxury w-full md:w-auto px-10 py-4">اكتشف المشروع</a>
-            <a href="#contact" className="border border-[#DBB155] text-[#DBB155] hover:bg-[#DBB155]/10 transition-all px-10 py-4 w-full md:w-auto font-bold">تواصل معنا</a>
+            <a href="#features" onClick={(e) => { e.preventDefault(); document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }); }} className="btn-luxury w-full md:w-auto px-10 py-4">اكتشف المشروع</a>
+            <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }} className="border border-[#DBB155] text-[#DBB155] hover:bg-[#DBB155]/10 transition-all px-10 py-4 w-full md:w-auto font-bold">تواصل معنا</a>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-        <div className="w-6 h-10 border-2 border-[#DBB155]/30 rounded-full flex items-start justify-center p-1.5">
-          <div className="w-1.5 h-3 bg-[#DBB155] rounded-full" />
-        </div>
-      </div>
+
     </section>
   );
 };
