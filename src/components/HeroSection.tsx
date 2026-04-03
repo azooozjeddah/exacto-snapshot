@@ -44,7 +44,7 @@ const HeroSection = () => {
   const subtitleAr = get('hero_subtitle', 'ar') || 'وجهة تجارية فريدة تجمع بين الأناقة والعصرية في أبحر الشمالية بجدة، حيث تلتقي الفخامة بالابتكار';
 
   const { displayLine1, displayLine2, phase, hasLine2, colorSplitAt } = useTypewriter([
-    { line1: "THE VIEW", line2: "AVENUE" },
+    { line1: "THE VIEW AVENUE" },
     { line1: "ذا فيو أفينيو", colorSplitAt: 6 },
   ], { typeSpeed: 120, deleteSpeed: 70, holdTime: 3500 });
 
