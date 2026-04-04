@@ -7,12 +7,18 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const { name, email, subject, message } = await req.json();
+    const { name, email, phone, subject, message } = await req.json();
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     if (!RESEND_API_KEY) {
       throw new Error("RESEND_API_KEY not set");
     }
+
+    const phoneRow = phone ? `
+          <tr>
+            <td style="padding: 10px; color: #DBB155; font-weight: bold;">رقم الجوال:</td>
+            <td style="padding: 10px; color: #f5f5f5;" dir="ltr">${phone}</td>
+          </tr>` : '';
 
     const htmlBody = `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #1a1a1a; color: #f5f5f5; padding: 30px; border-radius: 10px; border: 1px solid #DBB155;">
@@ -30,11 +36,12 @@ Deno.serve(async (req) => {
             <td style="padding: 10px; color: #DBB155; font-weight: bold;">البريد الإلكتروني:</td>
             <td style="padding: 10px; color: #f5f5f5;" dir="ltr">${email}</td>
           </tr>
-          <tr>
+          ${phoneRow}
+          <tr style="background: #222;">
             <td style="padding: 10px; color: #DBB155; font-weight: bold;">الموضوع:</td>
             <td style="padding: 10px; color: #f5f5f5;">${subject}</td>
           </tr>
-          <tr style="background: #222;">
+          <tr>
             <td style="padding: 10px; color: #DBB155; font-weight: bold; vertical-align: top;">الرسالة:</td>
             <td style="padding: 10px; color: #f5f5f5; white-space: pre-wrap;">${message}</td>
           </tr>
@@ -54,7 +61,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         from: "The View Avenue <noreply@theviewavenue.net>",
-        to: ["Admin@theviewavenue.net"],
+        to: ["azoooz.jeddah@gmail.com"],
         reply_to: email,
         subject: `رسالة جديدة: ${subject}`,
         html: htmlBody,

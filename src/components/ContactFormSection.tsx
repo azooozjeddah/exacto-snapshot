@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 const ContactFormSection = () => {
   const { toast } = useToast();
   const { get } = useSiteSettings();
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
 
   const whatsapp = get('whatsapp_number') || '966555610198';
@@ -39,6 +39,7 @@ const ContactFormSection = () => {
         body: JSON.stringify({
           name: form.name.trim(),
           email: form.email.trim(),
+          phone: form.phone.trim(),
           subject: form.subject.trim(),
           message: form.message.trim(),
         }),
@@ -62,7 +63,7 @@ const ContactFormSection = () => {
       });
 
       toast({ title: "شكراً! تم استقبال رسالتك. سيتم الرد عليك قريباً ✓" });
-      setForm({ name: "", email: "", subject: "", message: "" });
+      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (error) {
       console.error("Submit error:", error);
       toast({ title: "حدث خطأ. يرجى المحاولة لاحقاً", variant: "destructive" });
@@ -111,9 +112,15 @@ const ContactFormSection = () => {
               <Input id="c-email" type="email" placeholder="example@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} className="bg-secondary border-border focus:border-primary" dir="ltr" />
             </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="c-subject" className="text-foreground">الموضوع / Subject *</Label>
-            <Input id="c-subject" placeholder="موضوع الاستفسار" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} maxLength={200} className="bg-secondary border-border focus:border-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="c-phone" className="text-foreground">رقم الجوال / Phone</Label>
+              <Input id="c-phone" type="tel" placeholder="+966 5XX XXX XXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} maxLength={20} className="bg-secondary border-border focus:border-primary" dir="ltr" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="c-subject" className="text-foreground">الموضوع / Subject *</Label>
+              <Input id="c-subject" placeholder="موضوع الاستفسار" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} maxLength={200} className="bg-secondary border-border focus:border-primary" />
+            </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="c-message" className="text-foreground">الرسالة / Message *</Label>
