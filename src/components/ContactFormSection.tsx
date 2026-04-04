@@ -22,38 +22,49 @@ const ContactFormSection = () => {
       toast({ title: "يرجى تعبئة جميع الحقول المطلوبة", variant: "destructive" });
       return;
     }
-    setSending(true);
+     setSending(true);
 
     try {
-      // Save to database
-      const { error } = await supabase.from("contact_messages").insert({
+      // Send email directly via Edge Function (primary method)
+      const SUPABASE_URL = "https://epbqdwfbkwtsbnhvdtxv.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwYnFkd2Zia3d0c2JuaHZkdHh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2Mjg4MjcsImV4cCI6MjA5MDIwNDgyN30.KlWquEjTw6ozvA9rmVfV8bSWpIBxJ4JeJsvVQeyey2A";
+
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/send-contact-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          "apikey": SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          subject: form.subject.trim(),
+          message: form.message.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.error("Edge function error:", errText);
+        throw new Error("Failed to send email");
+      }
+
+      // Also save to database (non-blocking, best effort)
+      supabase.from("contact_messages").insert({
         name: form.name.trim(),
         email: form.email.trim(),
         subject: form.subject.trim(),
         message: form.message.trim(),
         send_method: "email",
+      }).then(({ error }) => {
+        if (error) console.warn("DB save failed (non-critical):", error.message);
       });
-
-      if (error) throw error;
-
-      // Send email notification to admin via Edge Function
-      try {
-        await supabase.functions.invoke("send-contact-email", {
-          body: {
-            name: form.name.trim(),
-            email: form.email.trim(),
-            subject: form.subject.trim(),
-            message: form.message.trim(),
-          },
-        });
-      } catch (emailError) {
-        // Email sending failed silently - message is still saved in DB
-        console.error("Email notification failed:", emailError);
-      }
 
       toast({ title: "شكراً! تم استقبال رسالتك. سيتم الرد عليك قريباً ✓" });
       setForm({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
+      console.error("Submit error:", error);
       toast({ title: "حدث خطأ. يرجى المحاولة لاحقاً", variant: "destructive" });
     } finally {
       setSending(false);
