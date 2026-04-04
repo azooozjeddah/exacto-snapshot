@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Save, Loader2, Phone, MapPin, Layout, Info, FileText } from 'lucide-react';
+import { Save, Loader2, Phone, MapPin, Layout, Info, FileText, Video } from 'lucide-react';
 
 interface SettingsMap {
   [key: string]: { value_ar: string; value_en: string };
@@ -61,6 +61,14 @@ const tabs = [
     fields: [
       { key: 'copyright_text', label: 'نص حقوق النشر بالعربية', type: 'text', lang: 'ar' },
       { key: 'copyright_text', label: 'نص حقوق النشر بالإنجليزية', type: 'text', lang: 'en' },
+    ],
+  },
+  {
+    id: 'video',
+    label: 'الجولة المرئية',
+    icon: Video,
+    fields: [
+      { key: 'video_url', label: 'رابط الفيديو (YouTube أو رابط مباشر .mp4)', type: 'text', dir: 'ltr' },
     ],
   },
 ];
