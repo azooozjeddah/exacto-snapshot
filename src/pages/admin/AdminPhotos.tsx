@@ -110,7 +110,7 @@ export default function AdminPhotos() {
   const confirmDelete = async () => {
     if (!deleteId) return;
     const photo = allPhotos.find((p) => p.id === deleteId);
-    if (photo?.file_key) await supabase.storage.from('media').remove([photo.file_key]);
+    if (photo?.file_key) await supabase.storage.from('gallery').remove([photo.file_key]);
     const { error } = await supabase.from('gallery_photos').delete().eq('id', deleteId);
     if (error) toast({ title: 'خطأ', description: 'فشل حذف الصورة', variant: 'destructive' });
     else {
@@ -125,12 +125,12 @@ export default function AdminPhotos() {
   const handleHeroUpload = async (file: File) => {
     const ext = file.name.split('.').pop();
     const path = `hero/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from('media').upload(path, file);
+    const { error } = await supabase.storage.from('gallery').upload(path, file);
     if (error) {
       toast({ title: 'خطأ', description: 'فشل رفع الصورة', variant: 'destructive' });
       return;
     }
-    const { data: urlData } = supabase.storage.from('media').getPublicUrl(path);
+    const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path);
     const payload = {
       url: urlData.publicUrl,
       file_key: path,
@@ -142,7 +142,7 @@ export default function AdminPhotos() {
     };
 
     if (heroPhoto) {
-      if (heroPhoto.file_key) await supabase.storage.from('media').remove([heroPhoto.file_key]);
+      if (heroPhoto.file_key) await supabase.storage.from('gallery').remove([heroPhoto.file_key]);
       await supabase.from('gallery_photos').update(payload).eq('id', heroPhoto.id);
     } else {
       await supabase.from('gallery_photos').insert(payload);

@@ -40,9 +40,9 @@ export default function PhotoUploadDialog({ open, onOpenChange, editId, form, se
     setUploading(true);
     const ext = file.name.split('.').pop();
     const path = `${storagePath}/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from('media').upload(path, file);
+    const { error } = await supabase.storage.from('gallery').upload(path, file);
     if (error) { toast({ title: 'خطأ', description: 'فشل رفع الصورة', variant: 'destructive' }); setUploading(false); return; }
-    const { data: urlData } = supabase.storage.from('media').getPublicUrl(path);
+    const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path);
     setForm((f) => ({ ...f, url: urlData.publicUrl, file_key: path }));
     setPreviewUrl(urlData.publicUrl);
     setUploading(false);

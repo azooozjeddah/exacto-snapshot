@@ -10,13 +10,15 @@ const FooterSection = () => {
     <footer id="contact" className="py-20 px-4 bg-[#161618] border-t border-[#DBB155]/10">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          <div className="md:col-span-2">
+          {/* الشعار والوصف */}
+          <div className="md:col-span-2 flex flex-col items-center text-center">
             <img src={logo} alt="The View Avenue" className="h-16 mb-6" />
             <p className="text-[#F5EEE0]/60 leading-relaxed text-lg max-w-md">
               ذا فيو أفينيو — للفخامة تعلو<br />
               وجهة تجارية فريدة تجمع بين الأناقة والعصرية في أبحر الشمالية بجدة، حيث تلتقي الفخامة بالابتكار.
             </p>
           </div>
+          {/* روابط سريعة */}
           <div>
             <h4 className="text-[#DBB155] font-bold text-xl mb-6">روابط سريعة</h4>
             <ul className="space-y-4 text-[#F5EEE0]/70 text-base">
@@ -24,10 +26,9 @@ const FooterSection = () => {
               <li><a href="#gallery" className="hover:text-[#DBB155] transition-colors">المميزات</a></li>
               <li><a href="#partners" className="hover:text-[#DBB155] transition-colors">المرافق</a></li>
               <li><a href="#location" className="hover:text-[#DBB155] transition-colors">الموقع</a></li>
-              <li><a href="/admin/login" className="hover:text-[#DBB155] transition-colors">لوحة التحكم</a></li>
-              <li><a href="/accounting/login" className="hover:text-[#DBB155] transition-colors">النظام المحاسبي</a></li>
             </ul>
           </div>
+          {/* تواصل معنا */}
           <div>
             <h4 className="text-[#DBB155] font-bold text-xl mb-6">تواصل معنا</h4>
             <ul className="space-y-4 text-[#F5EEE0]/70 text-base">
@@ -38,12 +39,11 @@ const FooterSection = () => {
           </div>
         </div>
         <div className="w-full h-px bg-[#DBB155]/10 mb-8" />
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[#F5EEE0]/40 text-sm">
+        {/* شريط حقوق الملكية */}
+        <div className="flex justify-center items-center gap-3 text-[#F5EEE0]/40 text-sm">
           <p>{copyright}</p>
-          <div className="flex gap-6">
-            <a href="/admin" className="hover:text-[#DBB155] transition-colors">لوحة التحكم</a>
-            <a href="/accounting/login" className="hover:text-[#DBB155] transition-colors">النظام المحاسبي</a>
-          </div>
+          <a href="/admin/login" className="text-xs text-[#F5EEE0]/40 hover:text-[#DBB155] transition-colors">1</a>
+          <a href="/accounting/login" className="text-xs text-[#F5EEE0]/40 hover:text-[#DBB155] transition-colors">2</a>
         </div>
       </div>
     </footer>
